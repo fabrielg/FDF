@@ -6,10 +6,11 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/05 14:42:19 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:01:53 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
 #include "./libft/libft.h"
 #include "./mlx/mlx.h"
 #include "./mlx/mlx_int.h"
@@ -46,6 +47,7 @@ int	main(int ac, char **av)
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 		return (ft_putendl_fd("Error: invalid fd", 1), 0);
+	parse(fd);
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "FDF");
 	img.img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
