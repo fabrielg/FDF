@@ -6,25 +6,12 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/07 19:14:04 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/07 20:01:18 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "./libft/libft.h"
-
-static int	free_map(t_height_color	**map)
-{
-	size_t	i;
-
-	if (!map)
-		return (0);
-	i = 0;
-	while (map[i])
-		free(map[i++]);
-	free(map);
-	return (1);
-}
 
 static void	free_split(char **split)
 {
@@ -67,32 +54,39 @@ static t_height_color	parse_data(char *data)
 	return (res);
 }
 
-static t_height_color	**split_datas(char *datas)
+static void	split_datas(char *datas, t_height_color ***map)
 {
-	t_height_color	**map;
-	char			**lines;
-	char			**line_datas;
-	int				i;
-	int				j;
+	size_t	nb_lines;
+	size_t	nb_columns;
+	char	**lines;
+	char	**line_datas;
+	int		i;
+	int		j;
 
-	map = NULL;
 	lines = ft_split(datas, '\n');
+	nb_lines = 0;
+	while (lines[nb_lines])
+		nb_lines++;
+	*map = ft_calloc(nb_lines + 1, sizeof(t_height_color *));
 	i = 0;
 	line_datas = NULL;
 	while (lines[i])
 	{
 		line_datas = ft_split(lines[i], ' ');
+		nb_columns = 0;
+		while (line_datas[nb_columns])
+			nb_columns++;
+		(*map)[i] = ft_calloc(nb_columns + 1, sizeof(t_height_color));
 		j = 0;
 		while (line_datas[j])
 		{
-			ft_printf("Height: %d	Color: %x\n", parse_data(line_datas[j]).height, parse_data(line_datas[j]).color);
+			(*map)[i][j] = parse_data(line_datas[j]);
 			j++;
 		}
 		if (line_datas)
 			free_split(line_datas);
 		i++;
 	}
-	return (map);
 }
 
 t_height_color	**parse(int fd)
@@ -101,11 +95,12 @@ t_height_color	**parse(int fd)
 	char			*map_content;
 
 	map = NULL;
-	free_map(map);
 	if (fd < 0)
 		return (NULL);
 	map_content = get_map_content(fd);
-	split_datas(map_content);
+	split_datas(map_content, &map);
 	free(map_content);
+	if (map)
+		ft_printf("OUI\n\n\n");
 	return (map);
 }
