@@ -6,74 +6,106 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/06 17:51:58 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:14:04 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "./libft/libft.h"
 
-static int	free_2d_array(void **tab)
+static int	free_map(t_height_color	**map)
+{
+	size_t	i;
+
+	if (!map)
+		return (0);
+	i = 0;
+	while (map[i])
+		free(map[i++]);
+	free(map);
+	return (1);
+}
+
+static void	free_split(char **split)
 {
 	size_t	i;
 
 	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-	return (1);
+	while (split[i])
+		free(split[i++]);
+	free(split);
 }
 
-static int	init_map(t_height_color	**map)
+static char	*get_map_content(int fd)
 {
-	int	nb_lines;
-	int	nb_columns;
-	int	i;
+	t_strbuilder	*build_content;
+	char			*map_content;
+	char			c;
 
-	map = ft_calloc(nb_lines + 1, sizeof(*map));
-	if (!map)
-		return (0);
+	build_content = ft_sb_new();
+	while (read(fd, &c, 1))
+		ft_sb_add_char(build_content, c);
+	map_content = ft_sb_build(build_content);
+	ft_sb_clear(&build_content);
+	ft_printf("Map :\n%s\n", map_content);
+	return (map_content);
+}
+
+static t_height_color	parse_data(char *data)
+{
+	t_height_color	res;
+	char			**values;
+
+	res.height = 0;
+	res.color = 0x00FFFFFF;
+	values = ft_split(data, ',');
+	if (!values)
+		return (res);
+	res.height = ft_atoi(values[0]);
+	if (values[1] && !ft_strncmp(values[1], "0x", 2))
+		res.color = ft_atoi_base(values[1] + 2, "0123456789ABCDEF");
+	return (res);
+}
+
+static t_height_color	**split_datas(char *datas)
+{
+	t_height_color	**map;
+	char			**lines;
+	char			**line_datas;
+	int				i;
+	int				j;
+
+	map = NULL;
+	lines = ft_split(datas, '\n');
 	i = 0;
-	while (i < nb_lines)
+	line_datas = NULL;
+	while (lines[i])
 	{
-		map[i] = ft_calloc(nb_columns + 1, sizeof((*map)[i]));
-		if (!map[i])
-			return (!free_2d_array(map));
+		line_datas = ft_split(lines[i], ' ');
+		j = 0;
+		while (line_datas[j])
+		{
+			ft_printf("Height: %d	Color: %x\n", parse_data(line_datas[j]).height, parse_data(line_datas[j]).color);
+			j++;
+		}
+		if (line_datas)
+			free_split(line_datas);
 		i++;
 	}
-	return (1);
+	return (map);
 }
 
 t_height_color	**parse(int fd)
 {
 	t_height_color	**map;
-	char			*line;
-	char			**datas;
-	int				i;
-	int				j;
+	char			*map_content;
 
+	map = NULL;
+	free_map(map);
 	if (fd < 0)
 		return (NULL);
-	line = NULL;
-	line = get_next_line(fd);
-	j = 0;
-	while (line)
-	{
-		datas = ft_split(line, ' ');
-		if (datas)
-		{
-			i = 0;
-			while (datas[i])
-			{
-				ft_printf("Point 3D: x:%d y:%d z:%s\n", i, j, datas[i]);
-				i++;
-			}
-			j++;
-			free_2d_array(datas);
-		}
-		free(line);
-		line = get_next_line(fd);
-	}
-	get_next_line(-42);
+	map_content = get_map_content(fd);
+	split_datas(map_content);
+	free(map_content);
 	return (map);
 }
