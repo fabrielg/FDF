@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/07 20:01:18 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:15:40 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static t_height_color	parse_data(char *data)
 	res.height = ft_atoi(values[0]);
 	if (values[1] && !ft_strncmp(values[1], "0x", 2))
 		res.color = ft_atoi_base(values[1] + 2, "0123456789ABCDEF");
+	free_split(values);
 	return (res);
 }
 
@@ -68,17 +69,21 @@ static void	split_datas(char *datas, t_height_color ***map)
 	while (lines[nb_lines])
 		nb_lines++;
 	*map = ft_calloc(nb_lines + 1, sizeof(t_height_color *));
+	if (!(*map))
+		return ;
 	i = 0;
 	line_datas = NULL;
 	while (lines[i])
 	{
 		line_datas = ft_split(lines[i], ' ');
 		nb_columns = 0;
-		while (line_datas[nb_columns])
+		while (line_datas && line_datas[nb_columns])
 			nb_columns++;
 		(*map)[i] = ft_calloc(nb_columns + 1, sizeof(t_height_color));
+		if (!(*map)[i])
+			return ;
 		j = 0;
-		while (line_datas[j])
+		while (line_datas && line_datas[j])
 		{
 			(*map)[i][j] = parse_data(line_datas[j]);
 			j++;
@@ -87,6 +92,7 @@ static void	split_datas(char *datas, t_height_color ***map)
 			free_split(line_datas);
 		i++;
 	}
+	free_split(lines);
 }
 
 t_height_color	**parse(int fd)
@@ -94,13 +100,11 @@ t_height_color	**parse(int fd)
 	t_height_color	**map;
 	char			*map_content;
 
-	map = NULL;
 	if (fd < 0)
 		return (NULL);
+	map = NULL;
 	map_content = get_map_content(fd);
 	split_datas(map_content, &map);
 	free(map_content);
-	if (map)
-		ft_printf("OUI\n\n\n");
 	return (map);
 }
