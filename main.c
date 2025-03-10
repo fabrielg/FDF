@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/08 20:06:35 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:14:54 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	put_pixel(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }*/
 
-static int	free_map(t_height_color	**map)
+int	free_map(t_height_color	**map)
 {
 	size_t	i;
 
@@ -62,8 +62,11 @@ int	main(int ac, char **av)
 	if (fd < 0)
 		return (ft_putendl_fd("Error: invalid fd", 1), 0);
 	map = parse(fd);
+	if (map)
+		ft_printf("TEST: %d %x\n", map[2][2].height, map[2][2].color);
+	else
+		ft_putendl_fd("MAP IS NULL", 1);
 	close(fd);
-	//ft_printf("TEST: %d %x\n", map[2][2].height, map[2][2].color);
 	free_map(map);
 	/*mlx = mlx_init();
 	window = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "FDF");
