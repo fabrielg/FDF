@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/12 16:58:24 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:24:55 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,28 @@ int	free_map(t_height_color	**map)
 	return (1);
 }
 
-void	draw_grid(t_height_color **map)
+void	draw_grid(t_height_color **map, size_t nb_rows, size_t nb_cols, t_data *img)
 {
 	t_point p1;
 	t_point p2;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (i < nb_rows)
+	{
+		j = 0;
+		while (j < nb_cols - 1)
+		{
+			p1.x = j * 100;
+			p1.y = i * 100;
+			p2.x = (j + 1) * 100;
+			p2.y = i * 100;
+			draw_line(p1, p2, img, map[i][j].color);
+			j++;
+		}
+		i++;
+	}
 }
 
 int	main(int ac, char **av)
@@ -60,25 +78,19 @@ int	main(int ac, char **av)
 	if (fd < 0)
 		return (ft_putendl_fd("Error: invalid fd", 1), 0);
 	map = parse(fd);
-	if (map)
-		ft_printf("TEST: %d %x\n", map[2][2].height, map[2][2].color);
-	else
+	if (!map)
+	{
 		ft_putendl_fd("MAP IS NULL", 1);
+		return (0);
+	}
 	close(fd);
-	free_map(map);
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "FDF");
 	img.img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 		&img.line_length, &img.endian);
-	t_point p1;
-	t_point p2;
-
-	p1.x = 0;
-	p1.y = 0;
-	p2.x = WINDOW_WIDTH;
-	p2.y = WINDOW_HEIGHT;
-	draw_line(p1, p2, &img);
+	draw_grid(map, 10, 10, &img);
+	free_map(map);
 	mlx_put_image_to_window(mlx, window, img.img, 0, 0);
 	mlx_loop(mlx);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 11:45:35 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/12 16:55:40 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:21:27 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,24 @@ static long	ft_abs(int x)
 	return (x);
 }
 
-static void	draw_line_h(t_point p0, t_point p1, int *deltas, t_data *img)
+static void	draw_line_h(t_point points[2], int deltas[2], t_data *img, int col)
 {
 	int	direction;
 	int	y;
 	int	p;
 	int	i;
 
-	if (p0.x > p1.x)
-		draw_line_h(p1, p0, deltas, img);
+	if (points[0].x > points[1].x)
+		draw_line_h(points, deltas, img, col);
 	direction = (2 * (deltas[1] < 0) - 1) * -1;
-	ft_printf("Direction horizontal: %d\n", direction);
 	if (deltas[0] == 0)
 		return ;
-	y = p0.y;
+	y = points[0].y;
 	p = 2 * deltas[1] - deltas[0];
 	i = 0;
 	while (i < (deltas[0] + 1))
 	{
-		put_pixel(img, p0.x + i, y, 0x00FF0000);
+		put_pixel(img, points[0].x + i, y, col);
 		if (p >= 0)
 		{
 			y += direction;
@@ -51,25 +50,24 @@ static void	draw_line_h(t_point p0, t_point p1, int *deltas, t_data *img)
 	}
 }
 
-static void	draw_line_v(t_point p0, t_point p1, int *deltas, t_data *img)
+static void	draw_line_v(t_point points[2], int deltas[2], t_data *img, int col)
 {
 	int	direction;
 	int	x;
 	int	p;
 	int	i;
 
-	if (p0.y > p1.y)
-		draw_line_v(p1, p0, deltas, img);
+	if (points[0].y > points[1].y)
+		draw_line_v(points, deltas, img, col);
 	direction = (2 * (deltas[0] < 0) - 1) * -1;
-	ft_printf("Direction vertical: %d\n", direction);
 	if (deltas[1] == 0)
 		return ;
-	x = p0.y;
+	x = points[0].y;
 	p = 2 * deltas[0] - deltas[1];
 	i = 0;
 	while (i < (deltas[1] + 1))
 	{
-		put_pixel(img, x, p0.y + i, 0x00FF0000);
+		put_pixel(img, x, points[0].y + i, col);
 		if (p >= 0)
 		{
 			x += direction;
@@ -80,14 +78,17 @@ static void	draw_line_v(t_point p0, t_point p1, int *deltas, t_data *img)
 	}
 }
 
-void	draw_line(t_point point0, t_point point1, t_data *img)
+void	draw_line(t_point point0, t_point point1, t_data *img, int color)
 {
-	int	deltas[2];
+	t_point	points[2];
+	int		deltas[2];
 
+	points[0] = point0;
+	points[1] = point1;
 	deltas[0] = point1.x - point0.x;
 	deltas[1] = point1.y - point0.y;
 	if (ft_abs(point1.x - point0.x) > ft_abs(point1.y - point0.y))
-		draw_line_h(point0, point1, deltas, img);
+		draw_line_h(points, deltas, img, color);
 	else
-		draw_line_v(point0, point1, deltas, img);
+		draw_line_v(points, deltas, img, color);
 }
