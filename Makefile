@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/03/10 17:15:24 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/03/12 16:46:39 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ MINILIBX =			./mlx/libmlx.a
 
 SRCS = \
 	main.c\
-	parsing.c
+	parsing.c\
+	draw_line.c
 
 OBJ_DIR = obj
 
