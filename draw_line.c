@@ -22,6 +22,15 @@ static long	ft_abs(int x)
 	return (x);
 }
 
+static void	swap_points(t_point *p0, t_point *p1)
+{
+	t_point	temp;
+
+	temp = *p0;
+	*p0 = *p1;
+	*p1 = temp;
+}
+
 static void	draw_line_h(t_point points[2], int deltas[2], t_data *img, int col)
 {
 	int	direction;
@@ -30,7 +39,7 @@ static void	draw_line_h(t_point points[2], int deltas[2], t_data *img, int col)
 	int	i;
 
 	if (points[0].x > points[1].x)
-		draw_line_h(points, deltas, img, col);
+		swap_points(&points[0], &points[1]);
 	direction = (2 * (deltas[1] < 0) - 1) * -1;
 	if (deltas[0] == 0)
 		return ;
@@ -58,11 +67,11 @@ static void	draw_line_v(t_point points[2], int deltas[2], t_data *img, int col)
 	int	i;
 
 	if (points[0].y > points[1].y)
-		draw_line_v(points, deltas, img, col);
+		swap_points(&points[0], &points[1]);
 	direction = (2 * (deltas[0] < 0) - 1) * -1;
 	if (deltas[1] == 0)
 		return ;
-	x = points[0].y;
+	x = points[0].x;
 	p = 2 * deltas[0] - deltas[1];
 	i = 0;
 	while (i < (deltas[1] + 1))
