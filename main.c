@@ -42,22 +42,34 @@ int	free_map(t_height_color	**map)
 
 void	draw_grid(t_height_color **map, size_t nb_rows, size_t nb_cols, t_data *img)
 {
-	t_point p1;
-	t_point p2;
+	t_point p_origin;
+	t_point p_right;
+	t_point p_down;
 	size_t	i;
 	size_t	j;
+	size_t	length;
 
 	i = 0;
+	length = 50;
 	while (i < nb_rows)
 	{
 		j = 0;
-		while (j < nb_cols - 1)
+		while (j < nb_cols)
 		{
-			p1.x = j * 100;
-			p1.y = i * 100;
-			p2.x = (j + 1) * 100;
-			p2.y = i * 100;
-			draw_line(p1, p2, img, map[i][j].color);
+			p_origin.x = j * length + length;
+			p_origin.y = i * length + length;
+			if (j + 1 < nb_cols)
+			{
+				p_right.x = p_origin.x + length;
+				p_right.y = p_origin.y;
+				draw_line(p_origin, p_right, img, map[i][j].color);
+			}
+			if (i + 1 < nb_rows)
+			{
+				p_down.x = p_origin.x;
+				p_down.y = p_origin.y + length;
+				draw_line(p_origin, p_down, img, map[i][j].color);
+			}
 			j++;
 		}
 		i++;
