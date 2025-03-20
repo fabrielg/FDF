@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/03/10 17:15:24 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/03/19 00:17:15 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ MINILIBX =			./mlx/libmlx.a
 
 SRCS = \
 	main.c\
-	parsing.c
+	parsing.c\
+	draw_line.c
 
 OBJ_DIR = obj
 
@@ -26,7 +27,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJS)
-	cc -g3 $(CFLAGS) -Lmlx -lmlx -Imlx -lXext -lX11 -o $(NAME) $(OBJS) $(LIBFT) $(MINILIBX)
+	cc -g3 $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(MINILIBX) -Lmlx -lmlx -lX11 -lXext -lm
 
 $(LIBFT):
 	make -C ./libft/
