@@ -13,17 +13,19 @@
 #include "fdf.h"
 #include "./libft/libft.h"
 
-static t_height_color	parse_data(char *data)
+static t_point	parse_data(char *data, int x, int y)
 {
-	t_height_color	res;
-	char			**values;
+	t_point	res;
+	char	**values;
 
-	res.height = 0;
+	res.axis[0] = x;
+	res.axis[1] = y;
+	res.axis[2] = 0;
 	res.color = 0x00FFFFFF;
 	values = ft_split(data, ',');
 	if (!values)
 		return (res);
-	res.height = ft_atoi(values[0]);
+	res.axis[2] = ft_atoi(values[0]);
 	if (values[1] && !ft_strncmp(values[1], "0x", 2))
 		res.color = ft_atoi_base(values[1] + 2, "0123456789ABCDEF");
 	free_split(values);
@@ -40,7 +42,7 @@ static size_t	nb_cols(char **datas)
 	return (count);
 }
 
-static int	init_lines(t_height_color ***map, t_list **lines, int fd)
+static int	init_lines(t_point ***map, t_list **lines, int fd)
 {
 	char	*line;
 
@@ -50,11 +52,11 @@ static int	init_lines(t_height_color ***map, t_list **lines, int fd)
 		ft_lstadd_back(lines, ft_lstnew(line));
 		line = get_next_line(fd);
 	}
-	(*map) = ft_calloc(ft_lstsize(*lines) + 1, sizeof(t_height_color *));
+	(*map) = ft_calloc(ft_lstsize(*lines) + 1, sizeof(t_point *));
 	return (!!(*map));
 }
 
-static int	fill_datas(t_height_color ***map, t_list *lines)
+static int	fill_datas(t_point ***map, t_list *lines)
 {
 	char	**line_datas;
 	size_t	i;
@@ -64,7 +66,7 @@ static int	fill_datas(t_height_color ***map, t_list *lines)
 	while (lines)
 	{
 		line_datas = ft_split(lines->content, ' ');
-		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_height_color));
+		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_point));
 		if (!(*map)[i])
 		{
 			free_split(line_datas);
@@ -73,7 +75,7 @@ static int	fill_datas(t_height_color ***map, t_list *lines)
 		j = 0;
 		while (line_datas && line_datas[j])
 		{
-			(*map)[i][j] = parse_data(line_datas[j]);
+			(*map)[i][j] = parse_data(line_datas[j], i, j);
 			j++;
 		}
 		free_split(line_datas);
@@ -83,10 +85,10 @@ static int	fill_datas(t_height_color ***map, t_list *lines)
 	return (1);
 }
 
-t_height_color	**parse(int fd)
+t_point	**parse(int fd)
 {
-	t_height_color	**map;
-	t_list			*lines;
+	t_point	**map;
+	t_list	*lines;
 
 	if (fd < 0)
 		return (NULL);

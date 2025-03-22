@@ -13,17 +13,19 @@
 #ifndef FDF_H
 # define FDF_H
 
-typedef struct s_height_color
-{
-	int	height;
-	int	color;
-}	t_height_color;
-
 typedef struct s_point
 {
-	int	x;
-	int	y;
+	int	axis[3];
+	int	color;
 }	t_point;
+
+typedef struct s_fdf
+{
+	t_point	**origin_map;
+	t_point	**projected_map;
+	int		nb_rows;
+	int		nb_cols;
+}	t_fdf;
 
 typedef struct s_data {
 	void	*img;
@@ -33,9 +35,9 @@ typedef struct s_data {
 	int		endian;
 }	t_data;
 
-t_height_color	**parse(int fd);
-int				free_map(t_height_color	**map);
-void			put_pixel(t_data *data, int x, int y, int color);
-void			draw_line(t_point p0, t_point p1, t_data *img, int color);
+t_point	**parse(int fd);
+int		free_map(t_point **map);
+void	put_pixel(t_data *data, int x, int y, int color);
+void	draw_line(t_point p0, t_point p1, t_data *img, int color);
 
 #endif
