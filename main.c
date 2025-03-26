@@ -14,8 +14,9 @@
 #include "./libft/libft.h"
 #include "./mlx/mlx.h"
 #include "./mlx/mlx_int.h"
-#include <fcntl.h>
 #include "matrix.h"
+#include <fcntl.h>
+#include <math.h>
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
@@ -24,6 +25,8 @@ void	put_pixel(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
+	if (x < 0 || WINDOW_WIDTH < x || y < 0 || WINDOW_HEIGHT < y)
+		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
@@ -41,36 +44,44 @@ int	free_map(t_point **map)
 	return (1);
 }
 
-void	draw_grid(t_point **map, size_t nb_rows, size_t nb_cols, t_data *img)
+void	apply_isometric(t_point **src, t_point **dst, int len)
 {
-	t_point p2_projected;
-	size_t	i;
-	size_t	j;
-	size_t	length;
+	static int	offset = 0;
+	int	size = WINDOW_HEIGHT / len;
+	int			i;
+	int			j;
 
 	i = 0;
-	length = 50;
-	while (i < nb_cols)
+	while (dst[i])
+	{
+		rotate_x(src[i], dst[i], atan(1 / (sqrt(2))) * 180 / M_PI, len);
+		rotate_y(src[i], dst[i], 45, len);
+		j = 0;
+		while (j < len)
+		{
+			dst[i][j].axis[0] = (size * dst[i][j].axis[0]) + WINDOW_WIDTH / WINDOW_WIDTH;
+			dst[i][j].axis[1] = (size * dst[i][j].axis[1]) + WINDOW_HEIGHT / WINDOW_HEIGHT;
+			j++;
+		}
+		i++;
+	}
+}
+
+void	draw_grid(t_point **map, size_t nb_rows, size_t nb_cols, t_data *img)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < nb_rows)
 	{
 		j = 0;
-		while (j < nb_rows)
+		while (j < nb_cols)
 		{
-			map[i][j].axis[0] *= length;
-			map[i][j].axis[1] *= length;
-			if (i + 1 < nb_cols)
-			{
-				p2_projected = map[i + 1][j];
-				p2_projected.axis[0] *= length;
-				p2_projected.axis[1] *= length;
-				draw_line(map[i][j], p2_projected, img, map[i][j].color);
-			}
-			if (j + 1 < nb_rows)
-			{
-				p2_projected = map[i][j + 1];
-				p2_projected.axis[0] *= length;
-				p2_projected.axis[1] *= length;
-				draw_line(map[i][j], p2_projected, img, map[i][j].color);
-			}
+			if (j + 1 < nb_cols)
+				draw_line(map[i][j], map[i][j + 1], img, map[i][j].color);
+			if (i + 1 < nb_rows)
+				draw_line(map[i][j], map[i + 1][j], img, map[i][j].color);
 			j++;
 		}
 		i++;
@@ -141,6 +152,7 @@ int	main(int ac, char **av)
 	img.img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 		&img.line_length, &img.endian);
+	apply_isometric(fdf.origin_map, fdf.projected_map, fdf.nb_cols);
 	draw_grid(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &img);
 	free_map(fdf.origin_map);
 	free_map(fdf.projected_map);
