@@ -13,6 +13,8 @@
 #ifndef FDF_H
 # define FDF_H
 
+# include <stdlib.h>
+
 typedef struct s_point
 {
 	int	axis[3];
@@ -35,7 +37,7 @@ typedef struct s_data {
 	int		endian;
 }	t_data;
 
-t_point	**parse(int fd);
+int		parse(t_point ***map, int fd, int *nb_rows, int *nb_columns);
 int		free_map(t_point **map);
 void	put_pixel(t_data *data, int x, int y, int color);
 void	draw_line(t_point p0, t_point p1, t_data *img, int color);

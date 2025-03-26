@@ -32,9 +32,9 @@ static t_point	parse_data(char *data, int x, int y)
 	return (res);
 }
 
-static size_t	nb_cols(char **datas)
+static int	nb_cols(char **datas)
 {
-	size_t	count;
+	int	count;
 
 	count = 0;
 	while (datas && datas[count])
@@ -42,31 +42,36 @@ static size_t	nb_cols(char **datas)
 	return (count);
 }
 
-static int	init_lines(t_point ***map, t_list **lines, int fd)
+static int	init_lines(t_point ***map, t_list **lines, int fd, int *nb_lines)
 {
 	char	*line;
 
+	*nb_lines = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		ft_lstadd_back(lines, ft_lstnew(line));
 		line = get_next_line(fd);
+		(*nb_lines)++;
 	}
 	(*map) = ft_calloc(ft_lstsize(*lines) + 1, sizeof(t_point *));
 	return (!!(*map));
 }
 
-static int	fill_datas(t_point ***map, t_list *lines)
+static int	fill_datas(t_point ***map, t_list *lines, int *nb_datas)
 {
 	char	**line_datas;
 	size_t	i;
 	size_t	j;
 
 	i = 0;
+	*nb_datas = -1;
 	while (lines)
 	{
 		line_datas = ft_split(lines->content, ' ');
 		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_point));
+		if (nb_cols(line_datas) < *nb_datas || *nb_datas < 0)
+			*nb_datas = nb_cols(line_datas);
 		if (!(*map)[i])
 		{
 			free_split(line_datas);
@@ -85,24 +90,23 @@ static int	fill_datas(t_point ***map, t_list *lines)
 	return (1);
 }
 
-t_point	**parse(int fd)
+int	parse(t_point ***map, int fd, int *nb_rows, int *nb_columns)
 {
-	t_point	**map;
 	t_list	*lines;
 
 	if (fd < 0)
-		return (NULL);
+		return (0);
 	lines = NULL;
-	if (!init_lines(&map, &lines, fd))
+	if (!init_lines(map, &lines, fd, nb_rows))
 	{
 		ft_lstclear(&lines, free);
-		return (NULL);
+		return (0);
 	}
-	if (!fill_datas(&map, lines))
+	if (!fill_datas(map, lines, nb_columns))
 	{
 		ft_lstclear(&lines, free);
-		return (NULL);
+		return (0);
 	}
 	ft_lstclear(&lines, free);
-	return (map);
+	return (1);
 }
