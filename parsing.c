@@ -18,14 +18,14 @@ static t_point	parse_data(char *data, int x, int y)
 	t_point	res;
 	char	**values;
 
-	res.axis[0] = x;
-	res.axis[1] = y;
-	res.axis[2] = 0;
+	res.v.axis[0] = x;
+	res.v.axis[1] = y;
+	res.v.axis[2] = 0;
 	res.color = 0x00FFFFFF;
 	values = ft_split(data, ',');
 	if (!values)
 		return (res);
-	res.axis[2] = ft_atoi(values[0]);
+	res.v.axis[2] = ft_atoi(values[0]);
 	if (values[1] && !ft_strncmp(values[1], "0x", 2))
 		res.color = ft_atoi_base(values[1] + 2, "0123456789ABCDEF");
 	free_split(values);

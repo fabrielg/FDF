@@ -22,16 +22,16 @@ static long	ft_abs(int x)
 	return (x);
 }
 
-static void	swap_points(t_point *p0, t_point *p1)
+static void	swap_points(t_vector2 *p0, t_vector2 *p1)
 {
-	t_point	temp;
+	t_vector2	temp;
 
 	temp = *p0;
 	*p0 = *p1;
 	*p1 = temp;
 }
 
-static void	draw_line_h(t_point points[2], int deltas[2], t_data *img, int col)
+static void	draw_line_h(t_vector2 points[2], int deltas[2], t_data *img, int col)
 {
 	int	direction;
 	int	y;
@@ -59,7 +59,7 @@ static void	draw_line_h(t_point points[2], int deltas[2], t_data *img, int col)
 	}
 }
 
-static void	draw_line_v(t_point points[2], int deltas[2], t_data *img, int col)
+static void	draw_line_v(t_vector2 points[2], int deltas[2], t_data *img, int col)
 {
 	int	direction;
 	int	x;
@@ -87,10 +87,10 @@ static void	draw_line_v(t_point points[2], int deltas[2], t_data *img, int col)
 	}
 }
 
-void	draw_line(t_point point0, t_point point1, t_data *img, int color)
+void	draw_line(t_vector2 point0, t_vector2 point1, t_data *img, int color)
 {
-	t_point	points[2];
-	int		deltas[2];
+	t_vector2	points[2];
+	int			deltas[2];
 
 	points[0] = point0;
 	points[1] = point1;

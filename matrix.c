@@ -13,9 +13,9 @@
 #include "fdf.h"
 #include <math.h>
 
-t_point m_multiply3(float matrix[3][3], t_point point)
+t_vector3 m_multiply3(float matrix[3][3], t_vector3 point)
 {
-    t_point result;
+    t_vector3 result;
     int     i;
     int     j;
 
@@ -35,7 +35,7 @@ t_point m_multiply3(float matrix[3][3], t_point point)
     return (result);
 }
 
-void    rotate_x(t_point *point, t_point *projection, float angle, int len)
+void    rotate_x(t_vector3 *point, t_vector3 *projection, float angle, int len)
 {
     float   matrix_x_rotation[3][3];
     float   rad;
@@ -58,7 +58,7 @@ void    rotate_x(t_point *point, t_point *projection, float angle, int len)
         projection[i] = m_multiply3(matrix_x_rotation, point[i]);
 }
 
-void    rotate_y(t_point *point, t_point *projection, float angle, int len)
+void    rotate_y(t_vector3 *point, t_vector3 *projection, float angle, int len)
 {
     float   matrix_y_rotation[3][3];
     float   rad;

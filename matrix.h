@@ -15,8 +15,18 @@
 
 # include "fdf.h"
 
-t_point m_multiply3(float matrix[3][3], t_point point);
-void    rotate_x(t_point *point, t_point *projection, float angle, int len);
-void    rotate_y(t_point *point, t_point *projection, float angle, int len);
+typedef struct s_vector3
+{
+	int axis[3];
+}	t_vector3;
+
+typedef struct s_vector2
+{
+	int axis[2];
+}	t_vector2;
+
+t_vector3	m_multiply3(float matrix[3][3], t_vector3 point);
+void		rotate_x(t_vector3 *point, t_vector3 *projection, float angle, int len);
+void		rotate_y(t_vector3 *point, t_vector3 *projection, float angle, int len);
 
 #endif

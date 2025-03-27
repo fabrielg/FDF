@@ -44,30 +44,69 @@ int	free_map(t_point **map)
 	return (1);
 }
 
-void	apply_isometric(t_point **src, t_point **dst, int len)
+int	projection_iso(t_point **src, t_vector2 **dst, int nb_rows, int nb_cols)
 {
-	static int	offset = 0;
-	int	size = WINDOW_HEIGHT / len;
-	int			i;
-	int			j;
+	static float	angle = M_PI / 4;
+	float			cos_a;
+	float			sin_a;
+	int				i;
+	int				j;
 
+	cos_a = cos(angle);
+	sin_a = sin(angle);
 	i = 0;
-	while (dst[i])
+	while (i < nb_rows)
 	{
-		rotate_x(src[i], dst[i], atan(1 / (sqrt(2))) * 180 / M_PI, len);
-		rotate_y(src[i], dst[i], 45, len);
 		j = 0;
-		while (j < len)
+		while (j < nb_cols)
 		{
-			dst[i][j].axis[0] = (size * dst[i][j].axis[0]) + WINDOW_WIDTH / WINDOW_WIDTH;
-			dst[i][j].axis[1] = (size * dst[i][j].axis[1]) + WINDOW_HEIGHT / WINDOW_HEIGHT;
+			dst[i][j].axis[0] = (cos_a * src[i][j].v.axis[0] - cos_a * src[i][j].v.axis[1]) * 20;
+			dst[i][j].axis[1] = (sin_a * src[i][j].v.axis[0] + sin_a * src[i][j].v.axis[1] - src[i][j].v.axis[2]) * 20;
+			dst[i][j].axis[0] += 500;
+			dst[i][j].axis[1] += 500;
+			ft_printf("x:%d y:%d\n", dst[i][j].axis[0], dst[i][j].axis[1]);
 			j++;
 		}
 		i++;
 	}
+	return (1);
 }
 
-void	draw_grid(t_point **map, size_t nb_rows, size_t nb_cols, t_data *img)
+int	init_projected_map(t_vector2 ***pm, int nb_rows, int nb_cols)
+{
+	int	i;
+
+	*pm = ft_calloc(nb_rows + 1, sizeof(t_vector2 *));
+	if (!(*pm))
+		return (0);
+	i = 0;
+	while (i < nb_rows)
+	{
+		(*pm)[i] = ft_calloc(nb_cols + 1, sizeof(t_vector2));
+		if (!(*pm)[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	init_fdf(t_fdf *fdf, int fd)
+{
+	fdf->origin_map = NULL;
+	fdf->projected_map = NULL;
+	fdf->nb_rows = 0;
+	fdf->nb_cols = 0;
+	if (!parse(&(fdf->origin_map), fd, &(fdf->nb_rows), &(fdf->nb_cols)))
+		return (0);
+	if (!init_projected_map(&fdf->projected_map, fdf->nb_rows, fdf->nb_cols))
+		return (0);
+	projection_iso(fdf->origin_map, fdf->projected_map, fdf->nb_rows, fdf->nb_cols);
+	if (!fdf->projected_map)
+		return (0);
+	return (1);
+}
+
+void	draw_map(t_vector2 **map, int nb_rows, int nb_cols, t_data *img)
 {
 	int	i;
 	int	j;
@@ -79,53 +118,13 @@ void	draw_grid(t_point **map, size_t nb_rows, size_t nb_cols, t_data *img)
 		while (j < nb_cols)
 		{
 			if (j + 1 < nb_cols)
-				draw_line(map[i][j], map[i][j + 1], img, map[i][j].color);
+				draw_line(map[i][j], map[i][j + 1], img, 0xFFFFFF);
 			if (i + 1 < nb_rows)
-				draw_line(map[i][j], map[i + 1][j], img, map[i][j].color);
+				draw_line(map[i][j], map[i + 1][j], img, 0xFFFFFF);
 			j++;
 		}
 		i++;
 	}
-}
-
-t_point	**map_dup(t_point **src, int nb_rows, int nb_cols)
-{
-	t_point	**dest;
-	int		i;
-	int		j;
-
-	dest = ft_calloc(nb_rows + 1, sizeof(t_point *));
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (i < nb_rows)
-	{
-		dest[i] = ft_calloc(nb_cols + 1, sizeof(t_point));
-		if (!dest[i])
-			return (NULL);
-		j = 0;
-		while (j < nb_cols)
-		{
-			dest[i][j] = src[i][j];
-			j++;
-		}
-		i++;
-	}
-	return (dest);
-}
-
-int	init_fdf(t_fdf *fdf, int fd)
-{
-	fdf->origin_map = NULL;
-	fdf->projected_map = NULL;
-	fdf->nb_rows = 0;
-	fdf->nb_cols = 0;
-	if (!parse(&(fdf->origin_map), fd, &(fdf->nb_rows), &(fdf->nb_cols)))
-		return (0);
-	fdf->projected_map = map_dup(fdf->origin_map, fdf->nb_rows, fdf->nb_cols);
-	if (!fdf->projected_map)
-		return (0);
-	return (1);
 }
 
 int	main(int ac, char **av)
@@ -152,10 +151,8 @@ int	main(int ac, char **av)
 	img.img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 		&img.line_length, &img.endian);
-	apply_isometric(fdf.origin_map, fdf.projected_map, fdf.nb_cols);
-	draw_grid(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &img);
+	draw_map(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &img);
 	free_map(fdf.origin_map);
-	free_map(fdf.projected_map);
 	mlx_put_image_to_window(mlx, window, img.img, 0, 0);
 	mlx_loop(mlx);
 	return (0);
