@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/12 17:24:55 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:53:33 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	put_pixel(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	free_map(t_point **map)
+int	free_map(t_point3 **map)
 {
 	size_t	i;
 
@@ -44,7 +44,7 @@ int	free_map(t_point **map)
 	return (1);
 }
 
-int	projection_iso(t_point **src, t_vector2 **dst, int nb_rows, int nb_cols)
+int	projection_iso(t_point3 **src, t_point2 **dst, int nb_rows, int nb_cols)
 {
 	static float	angle = M_PI / 4;
 	float			cos_a;
@@ -60,11 +60,11 @@ int	projection_iso(t_point **src, t_vector2 **dst, int nb_rows, int nb_cols)
 		j = 0;
 		while (j < nb_cols)
 		{
-			dst[i][j].axis[0] = (cos_a * src[i][j].v.axis[0] - cos_a * src[i][j].v.axis[1]) * 20;
-			dst[i][j].axis[1] = (sin_a * src[i][j].v.axis[0] + sin_a * src[i][j].v.axis[1] - src[i][j].v.axis[2]) * 20;
-			dst[i][j].axis[0] += 500;
-			dst[i][j].axis[1] += 500;
-			ft_printf("x:%d y:%d\n", dst[i][j].axis[0], dst[i][j].axis[1]);
+			dst[i][j].v.axis[0] = (cos_a * src[i][j].v.axis[0] - cos_a * src[i][j].v.axis[1]) * 20;
+			dst[i][j].v.axis[1] = (sin_a * src[i][j].v.axis[0] + sin_a * src[i][j].v.axis[1] - src[i][j].v.axis[2]) * 20;
+			dst[i][j].v.axis[0] += 500;
+			dst[i][j].v.axis[1] += 500;
+			dst[i][j].color = src[i][j].color;
 			j++;
 		}
 		i++;
@@ -72,17 +72,17 @@ int	projection_iso(t_point **src, t_vector2 **dst, int nb_rows, int nb_cols)
 	return (1);
 }
 
-int	init_projected_map(t_vector2 ***pm, int nb_rows, int nb_cols)
+int	init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols)
 {
 	int	i;
 
-	*pm = ft_calloc(nb_rows + 1, sizeof(t_vector2 *));
+	*pm = ft_calloc(nb_rows + 1, sizeof(t_point2 *));
 	if (!(*pm))
 		return (0);
 	i = 0;
 	while (i < nb_rows)
 	{
-		(*pm)[i] = ft_calloc(nb_cols + 1, sizeof(t_vector2));
+		(*pm)[i] = ft_calloc(nb_cols + 1, sizeof(t_point2));
 		if (!(*pm)[i])
 			return (0);
 		i++;
@@ -106,7 +106,7 @@ int	init_fdf(t_fdf *fdf, int fd)
 	return (1);
 }
 
-void	draw_map(t_vector2 **map, int nb_rows, int nb_cols, t_data *img)
+void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_data *img)
 {
 	int	i;
 	int	j;
@@ -118,9 +118,9 @@ void	draw_map(t_vector2 **map, int nb_rows, int nb_cols, t_data *img)
 		while (j < nb_cols)
 		{
 			if (j + 1 < nb_cols)
-				draw_line(map[i][j], map[i][j + 1], img, 0xFFFFFF);
+				draw_line(map[i][j].v, map[i][j + 1].v, img, map[i][j].color);
 			if (i + 1 < nb_rows)
-				draw_line(map[i][j], map[i + 1][j], img, 0xFFFFFF);
+				draw_line(map[i][j].v, map[i + 1][j].v, img, map[i][j].color);
 			j++;
 		}
 		i++;

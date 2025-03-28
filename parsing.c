@@ -6,16 +6,16 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/10 17:15:06 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:47:05 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "./libft/libft.h"
 
-static t_point	parse_data(char *data, int x, int y)
+static t_point3	parse_data(char *data, int x, int y)
 {
-	t_point	res;
+	t_point3	res;
 	char	**values;
 
 	res.v.axis[0] = x;
@@ -42,7 +42,7 @@ static int	nb_cols(char **datas)
 	return (count);
 }
 
-static int	init_lines(t_point ***map, t_list **lines, int fd, int *nb_lines)
+static int	init_lines(t_point3 ***map, t_list **lines, int fd, int *nb_lines)
 {
 	char	*line;
 
@@ -54,11 +54,11 @@ static int	init_lines(t_point ***map, t_list **lines, int fd, int *nb_lines)
 		line = get_next_line(fd);
 		(*nb_lines)++;
 	}
-	(*map) = ft_calloc(ft_lstsize(*lines) + 1, sizeof(t_point *));
+	(*map) = ft_calloc(ft_lstsize(*lines) + 1, sizeof(t_point3 *));
 	return (!!(*map));
 }
 
-static int	fill_datas(t_point ***map, t_list *lines, int *nb_datas)
+static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
 {
 	char	**line_datas;
 	size_t	i;
@@ -69,7 +69,7 @@ static int	fill_datas(t_point ***map, t_list *lines, int *nb_datas)
 	while (lines)
 	{
 		line_datas = ft_split(lines->content, ' ');
-		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_point));
+		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_point3));
 		if (nb_cols(line_datas) < *nb_datas || *nb_datas < 0)
 			*nb_datas = nb_cols(line_datas);
 		if (!(*map)[i])
@@ -90,7 +90,7 @@ static int	fill_datas(t_point ***map, t_list *lines, int *nb_datas)
 	return (1);
 }
 
-int	parse(t_point ***map, int fd, int *nb_rows, int *nb_columns)
+int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
 {
 	t_list	*lines;
 
