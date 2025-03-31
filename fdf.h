@@ -41,6 +41,8 @@ typedef struct s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }	t_data;
 
 typedef struct s_fdf
@@ -52,6 +54,8 @@ typedef struct s_fdf
 	void		*mlx;
 	void		*window;
 	t_data		img;
+	int			window_width;
+	int			window_height;
 }	t_fdf;
 
 int		parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns);
