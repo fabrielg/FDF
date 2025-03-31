@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 11:45:35 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/31 16:02:38 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:58:27 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,23 @@ static void	update_point(t_vector2 *p0, int deltas[2], int steps[2], int *err)
 	}
 }
 
-void	draw_line(t_vector2 point0, t_vector2 point1, t_data *img, int color)
+void	draw_line(t_vector2 p0, t_vector2 p1, t_data *img, int color)
 {
 	int	deltas[2];
 	int	steps[2];
 	int	err;
-	int	err2;
 
-	deltas[X] = ft_abs(point1.axis[X] - point0.axis[X]);
-	steps[X] = (point0.axis[X] < point1.axis[X]) * 2 - 1;
-	deltas[Y] = -ft_abs(point1.axis[Y] - point0.axis[Y]);
-	steps[Y] = (point0.axis[Y] < point1.axis[Y]) * 2 - 1;
+	deltas[X] = ft_abs(p1.axis[X] - p0.axis[X]);
+	steps[X] = (p0.axis[X] < p1.axis[X]) * 2 - 1;
+	deltas[Y] = -ft_abs(p1.axis[Y] - p0.axis[Y]);
+	steps[Y] = (p0.axis[Y] < p1.axis[Y]) * 2 - 1;
 	err = deltas[X] + deltas[Y];
 	while (1)
 	{
-		put_pixel(img, point0.axis[X], point0.axis[Y], color);
-		if (point0.axis[X] == point1.axis[X]
-			&& point0.axis[Y] == point1.axis[Y])
+		put_pixel(img, p0.axis[X], p0.axis[Y], color);
+		if (p0.axis[X] == p1.axis[X]
+			&& p0.axis[Y] == p1.axis[Y])
 			break ;
-		update_point(&point0, deltas, steps, &err);
+		update_point(&p0, deltas, steps, &err);
 	}
 }

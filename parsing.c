@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/28 15:47:05 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:02:58 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static t_point3	parse_data(char *data, int x, int y)
 {
 	t_point3	res;
-	char	**values;
+	char		**values;
 
 	res.v.axis[0] = x;
 	res.v.axis[1] = y;
@@ -61,8 +61,8 @@ static int	init_lines(t_point3 ***map, t_list **lines, int fd, int *nb_lines)
 static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
 {
 	char	**line_datas;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	*nb_datas = -1;
@@ -77,12 +77,9 @@ static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
 			free_split(line_datas);
 			return (!free_map(*map));
 		}
-		j = 0;
-		while (line_datas && line_datas[j])
-		{
+		j = -1;
+		while (line_datas && line_datas[++j])
 			(*map)[i][j] = parse_data(line_datas[j], i, j);
-			j++;
-		}
 		free_split(line_datas);
 		i++;
 		lines = lines->next;
