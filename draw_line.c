@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 11:45:35 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/12 17:21:27 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:02:38 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,82 +22,41 @@ static long	ft_abs(int x)
 	return (x);
 }
 
-static void	swap_points(t_point *p0, t_point *p1)
+static void	update_point(t_vector2 *p0, int deltas[2], int steps[2], int *err)
 {
-	t_point	temp;
+	int	err2;
 
-	temp = *p0;
-	*p0 = *p1;
-	*p1 = temp;
-}
-
-static void	draw_line_h(t_point points[2], int deltas[2], t_data *img, int col)
-{
-	int	direction;
-	int	y;
-	int	p;
-	int	i;
-
-	if (points[0].x > points[1].x)
-		swap_points(&points[0], &points[1]);
-	direction = (2 * (deltas[1] < 0) - 1) * -1;
-	if (deltas[0] == 0)
-		return ;
-	y = points[0].y;
-	p = 2 * deltas[1] - deltas[0];
-	i = 0;
-	while (i < (deltas[0] + 1))
+	err2 = 2 * (*err);
+	if (err2 >= deltas[Y])
 	{
-		put_pixel(img, points[0].x + i, y, col);
-		if (p >= 0)
-		{
-			y += direction;
-			p = p - (2 * deltas[0]);
-		}
-		p = p + (2 * deltas[1]);
-		i++;
+		*err += deltas[Y];
+		p0->axis[X] += steps[X];
+	}
+	if (err2 <= deltas[X])
+	{
+		*err += deltas[X];
+		p0->axis[Y] += steps[Y];
 	}
 }
 
-static void	draw_line_v(t_point points[2], int deltas[2], t_data *img, int col)
+void	draw_line(t_vector2 point0, t_vector2 point1, t_data *img, int color)
 {
-	int	direction;
-	int	x;
-	int	p;
-	int	i;
+	int	deltas[2];
+	int	steps[2];
+	int	err;
+	int	err2;
 
-	if (points[0].y > points[1].y)
-		swap_points(&points[0], &points[1]);
-	direction = (2 * (deltas[0] < 0) - 1) * -1;
-	if (deltas[1] == 0)
-		return ;
-	x = points[0].x;
-	p = 2 * deltas[0] - deltas[1];
-	i = 0;
-	while (i < (deltas[1] + 1))
+	deltas[X] = ft_abs(point1.axis[X] - point0.axis[X]);
+	steps[X] = (point0.axis[X] < point1.axis[X]) * 2 - 1;
+	deltas[Y] = -ft_abs(point1.axis[Y] - point0.axis[Y]);
+	steps[Y] = (point0.axis[Y] < point1.axis[Y]) * 2 - 1;
+	err = deltas[X] + deltas[Y];
+	while (1)
 	{
-		put_pixel(img, x, points[0].y + i, col);
-		if (p >= 0)
-		{
-			x += direction;
-			p = p - (2 * deltas[1]);
-		}
-		p = p + (2 * deltas[0]);
-		i++;
+		put_pixel(img, point0.axis[X], point0.axis[Y], color);
+		if (point0.axis[X] == point1.axis[X]
+			&& point0.axis[Y] == point1.axis[Y])
+			break ;
+		update_point(&point0, deltas, steps, &err);
 	}
-}
-
-void	draw_line(t_point point0, t_point point1, t_data *img, int color)
-{
-	t_point	points[2];
-	int		deltas[2];
-
-	points[0] = point0;
-	points[1] = point1;
-	deltas[0] = point1.x - point0.x;
-	deltas[1] = point1.y - point0.y;
-	if (ft_abs(point1.x - point0.x) > ft_abs(point1.y - point0.y))
-		draw_line_h(points, deltas, img, color);
-	else
-		draw_line_v(points, deltas, img, color);
 }

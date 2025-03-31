@@ -11,14 +11,15 @@
 # **************************************************************************** #
 
 NAME =				fdf
-CFLAGS =			-Wall -Wextra -Werror
+CFLAGS =			#-Wall -Wextra -Werror
 LIBFT =				./libft/libft.a
 MINILIBX =			./mlx/libmlx.a
 
 SRCS = \
 	main.c\
 	parsing.c\
-	draw_line.c
+	draw_line.c\
+	matrix.c
 
 OBJ_DIR = obj
 

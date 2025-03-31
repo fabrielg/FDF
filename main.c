@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/12 17:24:55 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:03:48 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "./libft/libft.h"
 #include "./mlx/mlx.h"
 #include "./mlx/mlx_int.h"
-#include <fcntl.h>
+#include "matrix.h"
+#include <math.h>
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
@@ -23,11 +24,13 @@ void	put_pixel(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
+	if (x < 0 || WINDOW_WIDTH < x || y < 0 || WINDOW_HEIGHT < y)
+		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
 
-int	free_map(t_height_color	**map)
+int	free_map(t_point3 **map)
 {
 	size_t	i;
 
@@ -40,36 +43,88 @@ int	free_map(t_height_color	**map)
 	return (1);
 }
 
-void	draw_grid(t_height_color **map, size_t nb_rows, size_t nb_cols, t_data *img)
+int	projection_iso(t_point3 **src, t_point2 **dst, int nb_rows, int nb_cols)
 {
-	t_point p_origin;
-	t_point p_right;
-	t_point p_down;
-	size_t	i;
-	size_t	j;
-	size_t	length;
+	static float	angle = M_PI / 4;
+	float			cos_a;
+	float			sin_a;
+	int				i;
+	int				j;
 
+	cos_a = cos(angle);
+	sin_a = sin(angle);
 	i = 0;
-	length = 50;
 	while (i < nb_rows)
 	{
 		j = 0;
 		while (j < nb_cols)
 		{
-			p_origin.x = j * length + length;
-			p_origin.y = i * length + length;
+			dst[i][j].v.axis[X] = (cos_a * src[i][j].v.axis[X] - cos_a * src[i][j].v.axis[Y]) * 30;
+			dst[i][j].v.axis[Y] = (sin_a * src[i][j].v.axis[X] + sin_a * src[i][j].v.axis[Y] - (src[i][j].v.axis[Z] * 0.5f)) * 30;
+
+			dst[i][j].v.axis[X] += 500;
+			dst[i][j].v.axis[Y] += 500;
+			if (i == 0 && j == 0)
+				dst[i][j].color = 0x0000FF;
+			else
+				dst[i][j].color = src[i][j].color;
+			ft_printf("x:%d y:%d\n", dst[i][j].v.axis[X], dst[i][j].v.axis[Y]);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols)
+{
+	int	i;
+
+	*pm = ft_calloc(nb_rows + 1, sizeof(t_point2 *));
+	if (!(*pm))
+		return (0);
+	i = 0;
+	while (i < nb_rows)
+	{
+		(*pm)[i] = ft_calloc(nb_cols + 1, sizeof(t_point2));
+		if (!(*pm)[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	init_fdf(t_fdf *fdf, int fd)
+{
+	fdf->origin_map = NULL;
+	fdf->projected_map = NULL;
+	fdf->nb_rows = 0;
+	fdf->nb_cols = 0;
+	if (!parse(&(fdf->origin_map), fd, &(fdf->nb_rows), &(fdf->nb_cols)))
+		return (0);
+	if (!init_projected_map(&fdf->projected_map, fdf->nb_rows, fdf->nb_cols))
+		return (0);
+	projection_iso(fdf->origin_map, fdf->projected_map, fdf->nb_rows, fdf->nb_cols);
+	if (!fdf->projected_map)
+		return (0);
+	return (1);
+}
+
+void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_data *img)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < nb_rows)
+	{
+		j = 0;
+		while (j < nb_cols)
+		{
 			if (j + 1 < nb_cols)
-			{
-				p_right.x = p_origin.x + length;
-				p_right.y = p_origin.y;
-				draw_line(p_origin, p_right, img, map[i][j].color);
-			}
+				draw_line(map[i][j].v, map[i][j + 1].v, img, map[i][j].color);
 			if (i + 1 < nb_rows)
-			{
-				p_down.x = p_origin.x;
-				p_down.y = p_origin.y + length;
-				draw_line(p_origin, p_down, img, map[i][j].color);
-			}
+				draw_line(map[i][j].v, map[i + 1][j].v, img, map[i][j].color);
 			j++;
 		}
 		i++;
@@ -78,21 +133,20 @@ void	draw_grid(t_height_color **map, size_t nb_rows, size_t nb_cols, t_data *img
 
 int	main(int ac, char **av)
 {
-	t_height_color	**map;
-	int				fd;
-	void			*mlx;
-	void			*window;
-	t_data			img;
+	t_fdf	fdf;
+	int		fd;
+	void	*mlx;
+	void	*window;
+	t_data	img;
 
 	if (ac != 2)
 		return (ft_putendl_fd("Usage: ./fdf <filename>", 1), 0);
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 		return (ft_putendl_fd("Error: invalid fd", 1), 0);
-	map = parse(fd);
-	if (!map)
+	if (!init_fdf(&fdf, fd) || !fdf.origin_map || !fdf.projected_map)
 	{
-		ft_putendl_fd("MAP IS NULL", 1);
+		ft_putendl_fd("INIT FDF ERROR", 1);
 		return (0);
 	}
 	close(fd);
@@ -101,8 +155,8 @@ int	main(int ac, char **av)
 	img.img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 		&img.line_length, &img.endian);
-	draw_grid(map, 10, 10, &img);
-	free_map(map);
+	draw_map(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &img);
+	free_map(fdf.origin_map);
 	mlx_put_image_to_window(mlx, window, img.img, 0, 0);
 	mlx_loop(mlx);
 	return (0);
