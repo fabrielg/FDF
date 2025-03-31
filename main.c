@@ -34,8 +34,8 @@ int	main(int ac, char **av)
 	}
 	close(fd);
 	draw_map(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &fdf.img);
-	free_map(fdf.origin_map);
-	free_map(fdf.projected_map);
+	free_map((void **)fdf.origin_map);
+	free_map((void **)fdf.projected_map);
 	mlx_put_image_to_window(fdf.mlx, fdf.window, fdf.img.img, 0, 0);
 	mlx_loop(fdf.mlx);
 	return (0);

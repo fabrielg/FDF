@@ -75,7 +75,7 @@ static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
 		if (!(*map)[i])
 		{
 			free_split(line_datas);
-			return (!free_map(*map));
+			return (!free_map((void **)(*map)));
 		}
 		j = -1;
 		while (line_datas && line_datas[++j])
