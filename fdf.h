@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/28 15:46:39 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/31 15:02:45 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <stdlib.h>
 # include "matrix.h"
+
+# define X 0
+# define Y 1
+# define Z 2
 
 typedef struct s_point3
 {

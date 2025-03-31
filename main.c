@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/28 15:53:33 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:03:48 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "./mlx/mlx.h"
 #include "./mlx/mlx_int.h"
 #include "matrix.h"
-#include <fcntl.h>
 #include <math.h>
 
 #define WINDOW_WIDTH 1920
@@ -60,11 +59,16 @@ int	projection_iso(t_point3 **src, t_point2 **dst, int nb_rows, int nb_cols)
 		j = 0;
 		while (j < nb_cols)
 		{
-			dst[i][j].v.axis[0] = (cos_a * src[i][j].v.axis[0] - cos_a * src[i][j].v.axis[1]) * 20;
-			dst[i][j].v.axis[1] = (sin_a * src[i][j].v.axis[0] + sin_a * src[i][j].v.axis[1] - src[i][j].v.axis[2]) * 20;
-			dst[i][j].v.axis[0] += 500;
-			dst[i][j].v.axis[1] += 500;
-			dst[i][j].color = src[i][j].color;
+			dst[i][j].v.axis[X] = (cos_a * src[i][j].v.axis[X] - cos_a * src[i][j].v.axis[Y]) * 30;
+			dst[i][j].v.axis[Y] = (sin_a * src[i][j].v.axis[X] + sin_a * src[i][j].v.axis[Y] - (src[i][j].v.axis[Z] * 0.5f)) * 30;
+
+			dst[i][j].v.axis[X] += 500;
+			dst[i][j].v.axis[Y] += 500;
+			if (i == 0 && j == 0)
+				dst[i][j].color = 0x0000FF;
+			else
+				dst[i][j].color = src[i][j].color;
+			ft_printf("x:%d y:%d\n", dst[i][j].v.axis[X], dst[i][j].v.axis[Y]);
 			j++;
 		}
 		i++;
