@@ -32,10 +32,7 @@ int	projection_iso(t_point3 **src, t_point2 **dst, int nb_rows, int nb_cols)
 			dst[i][j].v.axis[Y] = (sin_a * src[i][j].v.axis[X] + sin_a * src[i][j].v.axis[Y] - (src[i][j].v.axis[Z] * 0.5f)) * 30;
 			dst[i][j].v.axis[X] += 500;
 			dst[i][j].v.axis[Y] += 500;
-			if (i == 0 && j == 0)
-				dst[i][j].color = 0x0000FF;
-			else
-				dst[i][j].color = src[i][j].color;
+			dst[i][j].color = src[i][j].color;
 			j++;
 		}
 		i++;
