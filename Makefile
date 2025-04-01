@@ -6,12 +6,12 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/03/19 00:17:15 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/03/31 20:34:56 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =				fdf
-CFLAGS =			#-Wall -Wextra -Werror
+CFLAGS =			-Wall -Wextra -Werror
 LIBFT =				./libft/libft.a
 MINILIBX =			./mlx/libmlx.a
 
@@ -19,7 +19,10 @@ SRCS = \
 	main.c\
 	parsing.c\
 	draw_line.c\
-	matrix.c
+	matrix.c\
+	fdf.c\
+	projection.c\
+	window_utils.c
 
 OBJ_DIR = obj
 
