@@ -62,7 +62,7 @@ int	free_map(void **map)
 	return (1);
 }
 
-void	put_pixel(t_data *data, int x, int y, int color)
+void	put_pixel(t_img_data *data, int x, int y, int color)
 {
 	char	*dst;
 
@@ -72,7 +72,7 @@ void	put_pixel(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_data *img)
+void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img)
 {
 	int	i;
 	int	j;

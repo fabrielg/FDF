@@ -27,5 +27,6 @@ int	init_window(t_fdf *fdf)
 	fdf->img.img = mlx_new_image(fdf->mlx, WINDOW_WIDTH / 2, WINDOW_HEIGHT);
 	fdf->img.addr = mlx_get_data_addr(fdf->img.img, &fdf->img.bits_per_pixel, \
 		&fdf->img.line_length, &fdf->img.endian);
+	fdf->img.bg_color = 0x050A0F;
 	return (1);
 }

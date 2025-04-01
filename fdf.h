@@ -35,7 +35,7 @@ typedef struct s_point2
 	int			color;
 }	t_point2;
 
-typedef struct s_data {
+typedef struct s_img_data {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -43,7 +43,8 @@ typedef struct s_data {
 	int		endian;
 	int		width;
 	int		height;
-}	t_data;
+	int		bg_color;
+}	t_img_data;
 
 typedef struct s_fdf
 {
@@ -53,7 +54,7 @@ typedef struct s_fdf
 	int			nb_cols;
 	void		*mlx;
 	void		*window;
-	t_data		img;
+	t_img_data	img;
 	int			window_width;
 	int			window_height;
 }	t_fdf;
@@ -62,10 +63,10 @@ int		parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns);
 int		init_fdf(t_fdf *fdf, int fd);
 int		init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols);
 int		free_map(void **map);
-void	put_pixel(t_data *data, int x, int y, int color);
-void	draw_line(t_vector2 point0, t_vector2 point1, t_data *img, int color);
+void	put_pixel(t_img_data *data, int x, int y, int color);
+void	draw_line(t_vector2 point0, t_vector2 point1, t_img_data *img, int color);
 int		projection_iso(t_point3 **src, t_point2 **dst, int nb_rows, int nb_cols);
-void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_data *img);
+void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img);
 int		init_window(t_fdf *fdf);
 
 #endif
