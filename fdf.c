@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/31 21:00:06 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:42:34 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int	init_fdf(t_fdf *fdf, int fd)
 		return (0);
 	if (!init_projected_map(&fdf->projected_map, fdf->nb_rows, fdf->nb_cols))
 		return (0);
-	projection_iso(fdf->origin_map, fdf->projected_map,
-		fdf->nb_rows, fdf->nb_cols);
+	init_window(fdf);
+	projection_iso(fdf);
 	if (!fdf->projected_map)
 		return (0);
-	return (init_window(fdf));
+	return (1);
 }
 
 int	free_map(void **map)

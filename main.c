@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/07 15:30:41 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:54:45 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@
 #include "./mlx/mlx_int.h"
 #include "matrix.h"
 #include <math.h>
-
-static int	close_window(t_fdf *fdf)
-{
-	mlx_destroy_window(fdf->mlx, fdf->window);
-	exit(0);
-	return (1);
-}
 
 static int	handle_key_pressed(int keycode, t_fdf *fdf)
 {
