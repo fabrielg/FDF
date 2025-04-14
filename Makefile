@@ -21,6 +21,7 @@ SRCS = \
 	draw_line.c\
 	matrix.c\
 	fdf.c\
+	isometric.c\
 	projection.c\
 	window_utils.c
 
