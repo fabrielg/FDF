@@ -52,6 +52,8 @@ int	init_fdf(t_fdf *fdf, int fd)
 	projection_iso(fdf);
 	if (!fdf->projected_map)
 		return (0);
+	ft_super_memset(fdf->img.addr, &fdf->img.bg_color, (fdf->img.height)
+		* (fdf->img.width), sizeof(int));
 	return (1);
 }
 

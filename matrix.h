@@ -17,16 +17,16 @@
 
 typedef struct s_vector3
 {
-	int axis[3];
+	int	axis[3];
 }	t_vector3;
 
 typedef struct s_vector2
 {
-	int axis[2];
+	int	axis[2];
 }	t_vector2;
 
 t_vector3	m_multiply3(float matrix[3][3], t_vector3 point);
-void		rotate_x(t_vector3 *point, t_vector3 *projection, float angle, int len);
-void		rotate_y(t_vector3 *point, t_vector3 *projection, float angle, int len);
+void		rotate_x(t_vector3 *p, t_vector3 *projection, float angle, int len);
+void		rotate_y(t_vector3 *p, t_vector3 *projection, float angle, int len);
 
 #endif

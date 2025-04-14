@@ -39,7 +39,6 @@ int	main(int ac, char **av)
 		ft_putendl_fd("INIT FDF ERROR", 1);
 		return (0);
 	}
-	ft_super_memset(fdf.img.addr, &fdf.img.bg_color, (fdf.img.height) * (fdf.img.width), sizeof(int));
 	close(fd);
 	draw_map(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &fdf.img);
 	free_map((void **)fdf.origin_map);
