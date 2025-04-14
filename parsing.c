@@ -79,7 +79,7 @@ static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
 		}
 		j = -1;
 		while (line_datas && line_datas[++j])
-			(*map)[i][j] = parse_data(line_datas[j], i, j);
+			(*map)[i][j] = parse_data(line_datas[j], j, i);
 		free_split(line_datas);
 		i++;
 		lines = lines->next;

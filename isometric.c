@@ -23,8 +23,8 @@ static void	apply_iso_to_point(t_point3 *src, t_point2 *dst, int sz, int off[2])
 
 	cos_a = cos(M_PI_4);
 	sin_a = sin(M_PI_4);
-	x = src->v.axis[Y];
-	y = src->v.axis[X];
+	x = src->v.axis[X];
+	y = src->v.axis[Y];
 	z = src->v.axis[Z] * 0.5f;
 	dst->v.axis[X] = (x - y) * cos_a * sz + off[X];
 	dst->v.axis[Y] = (x + y) * sin_a * sz - z * sz / 2 + off[Y];
