@@ -30,6 +30,7 @@ int	init_window(t_fdf *fdf)
 	fdf->img.addr = mlx_get_data_addr(fdf->img.img, &fdf->img.bits_per_pixel, \
 		&fdf->img.line_length, &fdf->img.endian);
 	fdf->img.bg_color = WINDOW_BG_COLOR;
+	fdf->img.default_scale = 1.0;
 	return (1);
 }
 

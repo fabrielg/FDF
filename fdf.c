@@ -43,6 +43,12 @@ int	init_fdf(t_fdf *fdf, int fd)
 	if (!init_projected_map(&fdf->projected_map, fdf->nb_rows, fdf->nb_cols))
 		return (0);
 	init_window(fdf);
+	fdf->img.default_scale = 1;
+	fdf->img.offsets[X] = 0;
+	fdf->img.offsets[Y] = 0;
+	projection_iso(fdf);
+	init_min_max_points(fdf);
+	init_scale_and_offsets(fdf);
 	projection_iso(fdf);
 	if (!fdf->projected_map)
 		return (0);

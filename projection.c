@@ -11,58 +11,58 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <math.h>
+#include "./libft/libft.h"
 
-static int	ft_min(int a, int b)
+void	init_min_max_points(t_fdf *fdf)
 {
-	if (a <= b)
-		return (a);
-	return (b);
-}
+	t_point2	*p;
+	int			i;
+	int			j;
 
-static void	apply_iso_to_point(t_point3 *src, t_point2 *dst, int size, int offsets[2])
-{
-	float	cos_a;
-	float	sin_a;
-	int		x;
-	int		y;
-	int		z;
-
-	cos_a = cos(M_PI_4);
-	sin_a = sin(M_PI_4);
-	x = src->v.axis[Y];
-	y = src->v.axis[X];
-	z = src->v.axis[Z] * 0.5f;
-	dst->v.axis[X] = (x - y) * cos_a * size + offsets[X];
-	dst->v.axis[Y] = (x + y) * sin_a * size - z * size / 2 + offsets[Y];
-}
-
-void	projection_iso(t_fdf *fdf)
-{
-	int	i;
-	int	j;
-	int	size;
-	int	offsets[2];
-
-	size = ft_min(
-		fdf->img.width / (fdf->nb_cols + fdf->nb_rows),
-		fdf->img.height / (fdf->nb_cols + fdf->nb_rows)
-	);
-	offsets[X] = (fdf->img.width - (fdf->nb_cols + fdf->nb_rows) * size * cos(M_PI_4));
-	offsets[Y] = (fdf->img.height - (fdf->nb_cols + fdf->nb_rows) * size * sin(M_PI_4));
+	fdf->min_points[X] = &fdf->projected_map[0][0];
+	fdf->min_points[Y] = &fdf->projected_map[0][0];
+	fdf->max_points[X] = &fdf->projected_map[0][0];
+	fdf->max_points[Y] = &fdf->projected_map[0][0];
 	i = 0;
 	while (i < fdf->nb_rows)
 	{
 		j = 0;
 		while (j < fdf->nb_cols)
 		{
-			apply_iso_to_point(&fdf->origin_map[i][j],
-				&fdf->projected_map[i][j],
-				size,
-				offsets);
-			fdf->projected_map[i][j].color = fdf->origin_map[i][j].color;
+			p = &fdf->projected_map[i][j];
+			if (fdf->min_points[X]->v.axis[X] > p->v.axis[X])
+				fdf->min_points[X] = p;
+			if (fdf->min_points[Y]->v.axis[Y] > p->v.axis[Y])
+				fdf->min_points[Y] = p;
+			if (fdf->max_points[X]->v.axis[X] < p->v.axis[X])
+				fdf->max_points[X] = p;
+			if (fdf->max_points[Y]->v.axis[Y] < p->v.axis[Y])
+				fdf->max_points[Y] = p;
 			j++;
 		}
 		i++;
 	}
+}
+
+void	init_scale_and_offsets(t_fdf *fdf)
+{
+	float	proj_width;
+	float	proj_height;
+	float	scale_x;
+	float	scale_y;
+	float	margin;
+
+	margin = 0.9;
+	proj_width = fdf->max_points[X]->v.axis[X] - fdf->min_points[X]->v.axis[X];
+	proj_height = fdf->max_points[Y]->v.axis[Y] - fdf->min_points[Y]->v.axis[Y];
+	if (proj_width == 0 || proj_height == 0)
+    {
+        ft_putendl_fd("Error: Projection width or height is zero", 2);
+        return;
+    }
+	scale_x = (fdf->img.width * margin) / proj_width;
+	scale_y = (fdf->img.height * margin) / proj_height;
+	fdf->img.default_scale = ft_min(scale_x, scale_y);
+	fdf->img.offsets[X] = (fdf->img.width - proj_width * fdf->img.default_scale) / 2 - fdf->min_points[X]->v.axis[X] * fdf->img.default_scale;
+	fdf->img.offsets[Y] = (fdf->img.height - proj_height * fdf->img.default_scale) / 2 - fdf->min_points[Y]->v.axis[Y] * fdf->img.default_scale;
 }
