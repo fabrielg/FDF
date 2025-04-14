@@ -35,7 +35,8 @@ typedef struct s_point2
 	int			color;
 }	t_point2;
 
-typedef struct s_img_data {
+typedef struct s_img_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -68,9 +69,9 @@ int		init_fdf(t_fdf *fdf, int fd);
 int		init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols);
 int		free_map(void **map);
 void	put_pixel(t_img_data *data, int x, int y, int color);
-void	draw_line(t_vector2 point0, t_vector2 point1, t_img_data *img, int color);
+void	draw_line(t_vector2 p0, t_vector2 p1, t_img_data *img, int color);
 void	init_min_max_points(t_fdf *fdf);
-void	init_scale_and_offsets(t_fdf *fdf);
+int		init_scale_and_offsets(t_fdf *fdf);
 void	projection_iso(t_fdf *fdf);
 void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img);
 int		init_window(t_fdf *fdf);

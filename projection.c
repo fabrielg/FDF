@@ -23,11 +23,11 @@ void	init_min_max_points(t_fdf *fdf)
 	fdf->min_points[Y] = &fdf->projected_map[0][0];
 	fdf->max_points[X] = &fdf->projected_map[0][0];
 	fdf->max_points[Y] = &fdf->projected_map[0][0];
-	i = 0;
-	while (i < fdf->nb_rows)
+	i = -1;
+	while (++i < fdf->nb_rows)
 	{
-		j = 0;
-		while (j < fdf->nb_cols)
+		j = -1;
+		while (++j < fdf->nb_cols)
 		{
 			p = &fdf->projected_map[i][j];
 			if (fdf->min_points[X]->v.axis[X] > p->v.axis[X])
@@ -38,13 +38,11 @@ void	init_min_max_points(t_fdf *fdf)
 				fdf->max_points[X] = p;
 			if (fdf->max_points[Y]->v.axis[Y] < p->v.axis[Y])
 				fdf->max_points[Y] = p;
-			j++;
 		}
-		i++;
 	}
 }
 
-void	init_scale_and_offsets(t_fdf *fdf)
+int	init_scale_and_offsets(t_fdf *fdf)
 {
 	float	proj_width;
 	float	proj_height;
@@ -56,13 +54,18 @@ void	init_scale_and_offsets(t_fdf *fdf)
 	proj_width = fdf->max_points[X]->v.axis[X] - fdf->min_points[X]->v.axis[X];
 	proj_height = fdf->max_points[Y]->v.axis[Y] - fdf->min_points[Y]->v.axis[Y];
 	if (proj_width == 0 || proj_height == 0)
-    {
-        ft_putendl_fd("Error: Projection width or height is zero", 2);
-        return;
-    }
+	{
+		ft_putendl_fd("Error: Projection width or height is zero", 2);
+		return (0);
+	}
 	scale_x = (fdf->img.width * margin) / proj_width;
 	scale_y = (fdf->img.height * margin) / proj_height;
 	fdf->img.default_scale = ft_min(scale_x, scale_y);
-	fdf->img.offsets[X] = (fdf->img.width - proj_width * fdf->img.default_scale) / 2 - fdf->min_points[X]->v.axis[X] * fdf->img.default_scale;
-	fdf->img.offsets[Y] = (fdf->img.height - proj_height * fdf->img.default_scale) / 2 - fdf->min_points[Y]->v.axis[Y] * fdf->img.default_scale;
+	fdf->img.offsets[X] = (fdf->img.width - proj_width
+			* fdf->img.default_scale)
+		/ 2 - fdf->min_points[X]->v.axis[X] * fdf->img.default_scale;
+	fdf->img.offsets[Y] = (fdf->img.height - proj_height
+			* fdf->img.default_scale)
+		/ 2 - fdf->min_points[Y]->v.axis[Y] * fdf->img.default_scale;
+	return (1);
 }
