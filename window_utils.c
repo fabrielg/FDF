@@ -37,6 +37,11 @@ int	init_window(t_fdf *fdf)
 int	close_window(t_fdf *fdf)
 {
 	mlx_destroy_window(fdf->mlx, fdf->window);
+	mlx_destroy_image(fdf->mlx, fdf->img.img);
+	mlx_destroy_display(fdf->mlx);
+	if (fdf->mlx)
+		free(fdf->mlx);
+	free_fdf(fdf);
 	exit(0);
 	return (1);
 }

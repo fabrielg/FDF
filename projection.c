@@ -69,3 +69,26 @@ int	init_scale_and_offsets(t_fdf *fdf)
 		/ 2 - fdf->min_points[Y]->v.axis[Y] * fdf->img.default_scale;
 	return (1);
 }
+
+void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img)
+{
+	int	i;
+	int	j;
+
+	if (!map || !(*map))
+		return ;
+	i = 0;
+	while (i < nb_rows)
+	{
+		j = 0;
+		while (j < nb_cols)
+		{
+			if (j + 1 < nb_cols)
+				draw_line(map[i][j].v, map[i][j + 1].v, img, map[i][j].color);
+			if (i + 1 < nb_rows)
+				draw_line(map[i][j].v, map[i + 1][j].v, img, map[i][j].color);
+			j++;
+		}
+		i++;
+	}
+}
