@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/16 16:23:49 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:27:47 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static t_point3	parse_data(char *data, int x, int y)
 	res.v.axis[Y] = y;
 	res.v.axis[Z] = 0;
 	res.color = 0x00FFFFFF;
+	if (!data)
+		return (res);
 	values = ft_split(data, ',');
 	if (!values)
 		return (res);
