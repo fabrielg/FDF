@@ -6,13 +6,116 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/16 20:27:47 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/16 21:32:17 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "./libft/libft.h"
 
+static int	count_columns(const char *line)
+{
+	int	count;
+	int	in_word;
+
+	count = 0;
+	in_word = 0;
+	while (*line)
+	{
+		if (*line != ' ' && !in_word)
+		{
+			in_word = 1;
+			count++;
+		}
+		else if (*line == ' ')
+			in_word = 0;
+		line++;
+	}
+	return (count);
+}
+
+static int	parse_line(t_point3 *row, const char *line, int y)
+{
+	int		x;
+	char	*end;
+	char	*data;
+
+	x = 0;
+	data = (char *)line;
+	while (*data)
+	{
+		row[x].v.axis[X] = x;
+		row[x].v.axis[Y] = y;
+		row[x].v.axis[Z] = ft_strtol(data, &end, 10);
+		row[x].color = 0xFFFFFF;
+		if (*end == ',')
+			row[x].color = ft_strtol(end + 1, NULL, 16);
+		data = end;
+		while (*data == ' ')
+			data++;
+		x++;
+	}
+	return (1);
+}
+
+static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_columns)
+{
+	char	**line_datas;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (lines)
+	{
+		line_datas = ft_split(lines->content, ' ');
+		if (!line_datas)
+			return (0);
+		(*map)[i] = ft_calloc(*nb_columns, sizeof(t_point3));
+		if (!(*map)[i])
+		{
+			free_split(line_datas);
+			return (0);
+		}
+		j = 0;
+		while (line_datas[j] && j < *nb_columns)
+		{
+			(*map)[i][j] = parse_data(line_datas[j], j, i);
+			j++;
+		}
+		free_split(line_datas);
+		lines = lines->next;
+		i++;
+	}
+	return (1);
+	}
+
+int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
+{
+	t_list	*lines;
+	char	*line;
+
+	if (fd < 0)
+		return (0);
+	lines = NULL;
+	*nb_rows = 0;
+	while ((line = get_next_line(fd)))
+	{
+		ft_lstadd_back(&lines, ft_lstnew(line));
+		(*nb_rows)++;
+	}
+	if (*nb_rows == 0 || !lines)
+		return (0);
+	*nb_columns = count_columns(lines->content);
+	*map = ft_calloc(*nb_rows, sizeof(t_point3 *));
+	if (!(*map) || !fill_datas(map, lines, nb_columns))
+	{
+		ft_lstclear(&lines, free);
+		return (0);
+	}
+	ft_lstclear(&lines, free);
+	return (1);
+}
+/*
 static t_point3	parse_data(char *data, int x, int y)
 {
 	t_point3	res;
@@ -111,4 +214,4 @@ int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
 	}
 	ft_lstclear(&lines, free);
 	return (1);
-}
+}*/
