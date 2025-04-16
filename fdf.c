@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/16 16:39:35 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:11:13 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void	init_vars(t_fdf *fdf)
 	fdf->img.img = NULL;
 	fdf->window_width = 0;
 	fdf->window_height = 0;
-	fdf->min_points[2] = NULL;
-	fdf->max_points[2] = NULL;
+	ft_memset(fdf->min_points, 0, sizeof(t_point2) * 2);
+	ft_memset(fdf->max_points, 0, sizeof(t_point2) * 2);
 }
 
 int	init_fdf(t_fdf *fdf, int fd)
@@ -50,7 +50,8 @@ int	init_fdf(t_fdf *fdf, int fd)
 		return (0);
 	projection_iso(fdf);
 	init_min_max_points(fdf);
-	init_scale_and_offsets(fdf);
+	if (!init_scale_and_offsets(fdf))
+		return (0);
 	projection_iso(fdf);
 	if (!fdf->projected_map)
 		return (0);
