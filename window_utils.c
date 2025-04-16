@@ -13,6 +13,7 @@
 #include "fdf.h"
 #include "./mlx/mlx.h"
 #include "./mlx/mlx_int.h"
+#include "./libft/libft.h"
 
 #define WINDOW_BG_COLOR 0x16151f
 
@@ -31,12 +32,30 @@ int	init_window(t_fdf *fdf)
 			&fdf->img.line_length, &fdf->img.endian);
 	fdf->img.bg_color = WINDOW_BG_COLOR;
 	fdf->img.default_scale = 1.0;
+	ft_super_memset(fdf->img.addr, &fdf->img.bg_color, (fdf->img.height)
+		* (fdf->img.width), sizeof(int));
 	return (1);
+}
+
+static void	free_mlx(void *mlx, void *window, void *img)
+{
+	if (!mlx)
+		return ;
+	if (img)
+		mlx_destroy_image(mlx, img);
+	if (window)
+		mlx_destroy_window(mlx, window);
+	mlx_destroy_display(mlx);
+	if (mlx)
+		free(mlx);
 }
 
 int	close_window(t_fdf *fdf)
 {
-	mlx_destroy_window(fdf->mlx, fdf->window);
+	if (!fdf)
+		return (0);
+	free_mlx(fdf->mlx, fdf->window, (void *)fdf->img.img);
+	free_fdf(fdf);
 	exit(0);
 	return (1);
 }

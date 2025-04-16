@@ -32,6 +32,16 @@ static void	update_point(t_vector2 *p0, int deltas[2], int steps[2], int *err)
 	}
 }
 
+void	put_pixel(t_img_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < 0 || data->width < x || y < 0 || data->height < y)
+		return ;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
 void	draw_line(t_vector2 p0, t_vector2 p1, t_img_data *img, int color)
 {
 	int	deltas[2];

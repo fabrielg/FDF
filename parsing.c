@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/31 20:02:58 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:23:49 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static t_point3	parse_data(char *data, int x, int y)
 	t_point3	res;
 	char		**values;
 
-	res.v.axis[0] = x;
-	res.v.axis[1] = y;
-	res.v.axis[2] = 0;
+	res.v.axis[X] = x;
+	res.v.axis[Y] = y;
+	res.v.axis[Z] = 0;
 	res.color = 0x00FFFFFF;
 	values = ft_split(data, ',');
 	if (!values)
 		return (res);
-	res.v.axis[2] = ft_atoi(values[0]);
+	res.v.axis[Z] = ft_atoi(values[0]);
 	if (values[1] && !ft_strncmp(values[1], "0x", 2))
 		res.color = ft_atoi_base(values[1] + 2, "0123456789ABCDEF");
 	free_split(values);
@@ -48,6 +48,8 @@ static int	init_lines(t_point3 ***map, t_list **lines, int fd, int *nb_lines)
 
 	*nb_lines = 0;
 	line = get_next_line(fd);
+	if (!line)
+		return (0);
 	while (line)
 	{
 		ft_lstadd_back(lines, ft_lstnew(line));
@@ -72,13 +74,13 @@ static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
 		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_point3));
 		if (nb_cols(line_datas) < *nb_datas || *nb_datas < 0)
 			*nb_datas = nb_cols(line_datas);
-		if (!(*map)[i])
+		if (!(*map)[i] || !line_datas)
 		{
 			free_split(line_datas);
-			return (!free_map((void **)(*map)));
+			return (0);
 		}
 		j = -1;
-		while (line_datas && line_datas[++j])
+		while (line_datas[++j])
 			(*map)[i][j] = parse_data(line_datas[j], j, i);
 		free_split(line_datas);
 		i++;
@@ -96,7 +98,8 @@ int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
 	lines = NULL;
 	if (!init_lines(map, &lines, fd, nb_rows))
 	{
-		ft_lstclear(&lines, free);
+		if (lines)
+			ft_lstclear(&lines, free);
 		return (0);
 	}
 	if (!fill_datas(map, lines, nb_columns))

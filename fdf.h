@@ -67,6 +67,7 @@ typedef struct s_fdf
 int		parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns);
 int		init_fdf(t_fdf *fdf, int fd);
 int		init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols);
+void	free_fdf(t_fdf *fdf);
 int		free_map(void **map);
 void	put_pixel(t_img_data *data, int x, int y, int color);
 void	draw_line(t_vector2 p0, t_vector2 p1, t_img_data *img, int color);
