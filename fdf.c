@@ -14,6 +14,48 @@
 #include "./libft/libft.h"
 #include <math.h>
 
+static void	init_vars(t_fdf *fdf)
+{
+	fdf->origin_map = NULL;
+	fdf->projected_map = NULL;
+	fdf->nb_rows = 0;
+	fdf->nb_cols = 0;
+	fdf->mlx = NULL;
+	fdf->window = NULL;
+	fdf->img.addr = NULL;
+	fdf->img.bg_color = 0;
+	fdf->img.bits_per_pixel = 8;
+	fdf->img.default_scale = 1;
+	fdf->img.endian = 0;
+	fdf->img.height = 0;
+	fdf->img.width = 0;
+	fdf->img.line_length = 0;
+	fdf->img.offsets[X] = 0;
+	fdf->img.offsets[Y] = 0;
+	fdf->img.img = NULL;
+	fdf->window_width = 0;
+	fdf->window_height = 0;
+	fdf->min_points[2] = NULL;
+	fdf->max_points[2] = NULL;
+}
+
+int	init_fdf(t_fdf *fdf, int fd)
+{
+	init_vars(fdf);
+	if (!parse(&(fdf->origin_map), fd, &(fdf->nb_rows), &(fdf->nb_cols)))
+		return (0);
+	if (!init_projected_map(&fdf->projected_map, fdf->nb_rows, fdf->nb_cols))
+		return (0);
+	init_window(fdf);
+	projection_iso(fdf);
+	init_min_max_points(fdf);
+	init_scale_and_offsets(fdf);
+	projection_iso(fdf);
+	if (!fdf->projected_map)
+		return (0);
+	return (1);
+}
+
 int	init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols)
 {
 	int	i;
@@ -30,41 +72,6 @@ int	init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols)
 		i++;
 	}
 	return (1);
-}
-
-int	init_fdf(t_fdf *fdf, int fd)
-{
-	fdf->origin_map = NULL;
-	fdf->projected_map = NULL;
-	fdf->nb_rows = 0;
-	fdf->nb_cols = 0;
-	if (!parse(&(fdf->origin_map), fd, &(fdf->nb_rows), &(fdf->nb_cols)))
-		return (0);
-	if (!init_projected_map(&fdf->projected_map, fdf->nb_rows, fdf->nb_cols))
-		return (0);
-	init_window(fdf);
-	fdf->img.default_scale = 1;
-	fdf->img.offsets[X] = 0;
-	fdf->img.offsets[Y] = 0;
-	projection_iso(fdf);
-	init_min_max_points(fdf);
-	init_scale_and_offsets(fdf);
-	projection_iso(fdf);
-	if (!fdf->projected_map)
-		return (0);
-	ft_super_memset(fdf->img.addr, &fdf->img.bg_color, (fdf->img.height)
-		* (fdf->img.width), sizeof(int));
-	return (1);
-}
-
-void	put_pixel(t_img_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || data->width < x || y < 0 || data->height < y)
-		return ;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
 }
 
 int	free_map(void **map)

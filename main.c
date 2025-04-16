@@ -37,6 +37,7 @@ int	main(int ac, char **av)
 	if (!init_fdf(&fdf, fd) || !fdf.origin_map || !fdf.projected_map)
 	{
 		ft_putendl_fd("INIT FDF ERROR", 1);
+		close_window(&fdf);
 		return (0);
 	}
 	close(fd);

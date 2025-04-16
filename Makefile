@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME =				fdf
-CFLAGS =			-Wall -Wextra -Werror
+CFLAGS =			#-Wall -Wextra -Werror
 LIBFT =				./libft/libft.a
 MINILIBX =			./mlx/libmlx.a
 
