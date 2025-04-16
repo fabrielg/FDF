@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/03/31 20:02:58 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:23:49 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static t_point3	parse_data(char *data, int x, int y)
 	t_point3	res;
 	char		**values;
 
-	res.v.axis[0] = x;
-	res.v.axis[1] = y;
-	res.v.axis[2] = 0;
+	res.v.axis[X] = x;
+	res.v.axis[Y] = y;
+	res.v.axis[Z] = 0;
 	res.color = 0x00FFFFFF;
 	values = ft_split(data, ',');
 	if (!values)
@@ -71,11 +71,6 @@ static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
 	while (lines)
 	{
 		line_datas = ft_split(lines->content, ' ');
-		if (i == 7)
-		{
-			free_split(line_datas);
-			line_datas = NULL;
-		}
 		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_point3));
 		if (nb_cols(line_datas) < *nb_datas || *nb_datas < 0)
 			*nb_datas = nb_cols(line_datas);
