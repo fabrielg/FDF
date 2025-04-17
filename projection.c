@@ -58,15 +58,15 @@ int	init_scale_and_offsets(t_fdf *fdf)
 		ft_putendl_fd("Error: Projection width or height is zero", 2);
 		return (0);
 	}
-	scale_x = (fdf->img.width * margin) / proj_width;
-	scale_y = (fdf->img.height * margin) / proj_height;
-	fdf->img.default_scale = ft_min(scale_x, scale_y);
-	fdf->img.offsets[X] = (fdf->img.width - proj_width
-			* fdf->img.default_scale)
-		/ 2 - fdf->min_points[X]->v.axis[X] * fdf->img.default_scale;
-	fdf->img.offsets[Y] = (fdf->img.height - proj_height
-			* fdf->img.default_scale)
-		/ 2 - fdf->min_points[Y]->v.axis[Y] * fdf->img.default_scale;
+	scale_x = (fdf->projection.width * margin) / proj_width;
+	scale_y = (fdf->projection.height * margin) / proj_height;
+	fdf->projection.default_scale = ft_min(scale_x, scale_y);
+	fdf->projection.offsets[X] = (fdf->projection.width - proj_width
+			* fdf->projection.default_scale)
+		/ 2 - fdf->min_points[X]->v.axis[X] * fdf->projection.default_scale;
+	fdf->projection.offsets[Y] = (fdf->projection.height - proj_height
+			* fdf->projection.default_scale)
+		/ 2 - fdf->min_points[Y]->v.axis[Y] * fdf->projection.default_scale;
 	return (1);
 }
 

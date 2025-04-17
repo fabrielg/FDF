@@ -71,7 +71,7 @@ static t_point3	**get_map_from_lines(t_list *lines, int nb_rows, int *nb_cols)
 	{
 		if (!parse_line(lines->content, map + i, i, nb_cols))
 		{
-			free_map((void **)map, i);
+			ft_free_map((void **)map, i);
 			return (NULL);
 		}
 		lines = lines->next;
