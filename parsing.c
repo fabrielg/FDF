@@ -40,8 +40,8 @@ static int	parse_line(const char *line, t_point3 **p, int x, int *cols)
 		return (0);
 	*cols = ft_min(*cols, ft_strarrlen(split));
 	*p = malloc(*cols * sizeof(t_point3));
-	if (!p)
-		return (0);
+	if (!*p)
+		return (free_split(split), 0);
 	y = 0;
 	while (y < *cols)
 	{
@@ -71,7 +71,7 @@ static t_point3	**get_map_from_lines(t_list *lines, int nb_rows, int *nb_cols)
 	{
 		if (!parse_line(lines->content, map + i, i, nb_cols))
 		{
-			free_map((void **)map, nb_rows);
+			free_map((void **)map, i);
 			return (NULL);
 		}
 		lines = lines->next;
@@ -92,7 +92,7 @@ int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
 	*nb_rows = ft_lstsize(lines);
 	*nb_columns = 2147483647;
 	(*map) = get_map_from_lines(lines, *nb_rows, nb_columns);
-	if (!map)
+	if (!*map)
 	{
 		ft_lstclear(&lines, free);
 		return (0);
