@@ -29,11 +29,11 @@ static t_list	*get_lines_from_file(int fd)
 	return (lines);
 }
 
-static int	parse_line(const char *line, t_point3 **p, int x, int *cols)
+static int	parse_line(const char *line, t_point3 **p, int y, int *cols)
 {
 	char	**split;
 	char	*end;
-	int		y;
+	int		x;
 
 	split = ft_split(line, ' ');
 	if (!split)
@@ -42,17 +42,17 @@ static int	parse_line(const char *line, t_point3 **p, int x, int *cols)
 	*p = malloc(*cols * sizeof(t_point3));
 	if (!*p)
 		return (free_split(split), 0);
-	y = 0;
-	while (y < *cols)
+	x = 0;
+	while (x < *cols)
 	{
-		(*p + y)->color = 0xFFFFFF;
-		(*p + y)->v.axis[X] = x;
-		(*p + y)->v.axis[Y] = y;
-		(*p + y)->v.axis[Z] = ft_atoi(split[y]);
-		end = ft_strchr(split[y], ',');
+		(*p + x)->color = 0xFFFFFF;
+		(*p + x)->v.axis[X] = x;
+		(*p + x)->v.axis[Y] = y;
+		(*p + x)->v.axis[Z] = ft_atoi(split[x]);
+		end = ft_strchr(split[x], ',');
 		if (end && !ft_strncmp(end, ",0x", 3))
-			(*p + y)->color = ft_atoi_base(end + 3, "0123456789ABCDEF");
-		y++;
+			(*p + x)->color = ft_atoi_base(end + 3, "0123456789ABCDEF");
+		x++;
 	}
 	free_split(split);
 	return (1);
