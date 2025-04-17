@@ -76,15 +76,15 @@ int	init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols)
 	return (1);
 }
 
-int	free_map(void **map)
+int	free_map(void **map, int size)
 {
-	size_t	i;
+	int	i;
 
 	if (!map)
 		return (0);
-	i = 0;
-	while (map[i])
-		free(map[i++]);
+	i = -1;
+	while (++i < size)
+		free(map[i]);
 	free(map);
 	return (1);
 }
@@ -93,6 +93,6 @@ void	free_fdf(t_fdf *fdf)
 {
 	if (!fdf)
 		return ;
-	free_map((void **)fdf->origin_map);
-	free_map((void **)fdf->projected_map);
+	free_map((void **)fdf->origin_map, fdf->nb_rows);
+	free_map((void **)fdf->projected_map, fdf->nb_rows);
 }

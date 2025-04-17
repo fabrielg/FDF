@@ -13,82 +13,71 @@
 #include "fdf.h"
 #include "./libft/libft.h"
 
-static t_point3	parse_data(char *data, int x, int y)
+static t_list	*get_lines_from_file(int fd)
 {
-	t_point3	res;
-	char		**values;
+	t_list	*lines;
+	char	*temp_line;
 
-	res.v.axis[X] = x;
-	res.v.axis[Y] = y;
-	res.v.axis[Z] = 0;
-	res.color = 0x00FFFFFF;
-	if (!data)
-		return (res);
-	values = ft_split(data, ',');
-	if (!values)
-		return (res);
-	res.v.axis[Z] = ft_atoi(values[0]);
-	if (values[1] && !ft_strncmp(values[1], "0x", 2))
-		res.color = ft_atoi_base(values[1] + 2, "0123456789ABCDEF");
-	free_split(values);
-	return (res);
+	lines = NULL;
+	temp_line = get_next_line(fd);
+	while (temp_line)
+	{
+		ft_lstadd_back(&lines, ft_lstnew(temp_line));
+		temp_line = get_next_line(fd);
+	}
+	close(fd);
+	return (lines);
 }
 
-static int	nb_cols(char **datas)
+static int	parse_line(const char *line, t_point3 **p, int x, int *cols)
 {
-	int	count;
+	char	**split;
+	char	*end;
+	int		y;
 
-	count = 0;
-	while (datas && datas[count])
-		count++;
-	return (count);
-}
-
-static int	init_lines(t_point3 ***map, t_list **lines, int fd, int *nb_lines)
-{
-	char	*line;
-
-	*nb_lines = 0;
-	line = get_next_line(fd);
-	if (!line)
+	split = ft_split(line, ' ');
+	if (!split)
 		return (0);
-	while (line)
+	*cols = ft_min(*cols, ft_strarrlen(split));
+	*p = malloc(*cols * sizeof(t_point3));
+	if (!p)
+		return (0);
+	y = 0;
+	while (y < *cols)
 	{
-		ft_lstadd_back(lines, ft_lstnew(line));
-		line = get_next_line(fd);
-		(*nb_lines)++;
+		(*p + y)->color = 0xFFFFFF;
+		(*p + y)->v.axis[X] = x;
+		(*p + y)->v.axis[Y] = y;
+		(*p + y)->v.axis[Z] = ft_atoi(split[y]);
+		end = ft_strchr(split[y], ',');
+		if (end && !ft_strncmp(end, ",0x", 3))
+			(*p + y)->color = ft_atoi_base(end + 3, "0123456789ABCDEF");
+		y++;
 	}
-	(*map) = ft_calloc(ft_lstsize(*lines) + 1, sizeof(t_point3 *));
-	return (!!(*map));
+	free_split(split);
+	return (1);
 }
 
-static int	fill_datas(t_point3 ***map, t_list *lines, int *nb_datas)
+static t_point3	**get_map_from_lines(t_list *lines, int nb_rows, int *nb_cols)
 {
-	char	**line_datas;
-	int		i;
-	int		j;
+	t_point3	**map;
+	int			i;
 
+	map = malloc(nb_rows * sizeof(t_point3 *));
+	if (!map)
+		return (NULL);
 	i = 0;
-	*nb_datas = -1;
-	while (lines)
+	while (i < nb_rows)
 	{
-		line_datas = ft_split(lines->content, ' ');
-		(*map)[i] = ft_calloc(nb_cols(line_datas) + 1, sizeof(t_point3));
-		if (nb_cols(line_datas) < *nb_datas || *nb_datas < 0)
-			*nb_datas = nb_cols(line_datas);
-		if (!(*map)[i] || !line_datas)
+		if (!parse_line(lines->content, map + i, i, nb_cols))
 		{
-			free_split(line_datas);
-			return (0);
+			free_map((void **)map, nb_rows);
+			return (NULL);
 		}
-		j = -1;
-		while (line_datas[++j])
-			(*map)[i][j] = parse_data(line_datas[j], j, i);
-		free_split(line_datas);
-		i++;
 		lines = lines->next;
+		i++;
 	}
-	return (1);
+	return (map);
 }
 
 int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
@@ -97,14 +86,13 @@ int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
 
 	if (fd < 0)
 		return (0);
-	lines = NULL;
-	if (!init_lines(map, &lines, fd, nb_rows))
-	{
-		if (lines)
-			ft_lstclear(&lines, free);
+	lines = get_lines_from_file(fd);
+	if (!lines)
 		return (0);
-	}
-	if (!fill_datas(map, lines, nb_columns))
+	*nb_rows = ft_lstsize(lines);
+	*nb_columns = 2147483647;
+	(*map) = get_map_from_lines(lines, *nb_rows, nb_columns);
+	if (!map)
 	{
 		ft_lstclear(&lines, free);
 		return (0);

@@ -40,7 +40,6 @@ int	main(int ac, char **av)
 		close_window(&fdf);
 		return (0);
 	}
-	close(fd);
 	draw_map(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &fdf.img);
 	mlx_put_image_to_window(fdf.mlx, fdf.window, fdf.img.img, 0, 0);
 	mlx_hook(fdf.window, 2, 1L << 0, handle_key_pressed, &fdf);
