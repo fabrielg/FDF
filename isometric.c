@@ -43,8 +43,8 @@ void	projection_iso(t_fdf *fdf)
 		{
 			apply_iso_to_point(&fdf->origin_map[i][j],
 				&fdf->projected_map[i][j],
-				fdf->img.default_scale,
-				fdf->img.offsets);
+				fdf->projection.default_scale,
+				fdf->projection.offsets);
 			fdf->projected_map[i][j].color = fdf->origin_map[i][j].color;
 			j++;
 		}

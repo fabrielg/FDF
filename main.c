@@ -40,8 +40,11 @@ int	main(int ac, char **av)
 		close_window(&fdf);
 		return (0);
 	}
-	draw_map(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &fdf.img);
-	mlx_put_image_to_window(fdf.mlx, fdf.window, fdf.img.img, 0, 0);
+	draw_map(fdf.projected_map, fdf.nb_rows, fdf.nb_cols, &fdf.projection);
+	mlx_put_image_to_window(fdf.mlx, fdf.window, fdf.projection.img,
+		fdf.menu.width, 0);
+	mlx_put_image_to_window(fdf.mlx, fdf.window, fdf.menu.img, 0, 0);
+	display_info(&fdf);
 	mlx_hook(fdf.window, 2, 1L << 0, handle_key_pressed, &fdf);
 	mlx_hook(fdf.window, 17, 0, close_window, &fdf);
 	mlx_loop(fdf.mlx);

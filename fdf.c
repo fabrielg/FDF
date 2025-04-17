@@ -14,6 +14,21 @@
 #include "./libft/libft.h"
 #include <math.h>
 
+static void	init_img(t_img_data *image)
+{
+	image->addr = NULL;
+	image->bg_color = 0;
+	image->bits_per_pixel = 8;
+	image->default_scale = 1;
+	image->endian = 0;
+	image->height = 0;
+	image->width = 0;
+	image->line_length = 0;
+	image->offsets[X] = 0;
+	image->offsets[Y] = 0;
+	image->img = NULL;
+}
+
 static void	init_vars(t_fdf *fdf)
 {
 	fdf->origin_map = NULL;
@@ -22,17 +37,8 @@ static void	init_vars(t_fdf *fdf)
 	fdf->nb_cols = 0;
 	fdf->mlx = NULL;
 	fdf->window = NULL;
-	fdf->img.addr = NULL;
-	fdf->img.bg_color = 0;
-	fdf->img.bits_per_pixel = 8;
-	fdf->img.default_scale = 1;
-	fdf->img.endian = 0;
-	fdf->img.height = 0;
-	fdf->img.width = 0;
-	fdf->img.line_length = 0;
-	fdf->img.offsets[X] = 0;
-	fdf->img.offsets[Y] = 0;
-	fdf->img.img = NULL;
+	init_img(&fdf->projection);
+	init_img(&fdf->menu);
 	fdf->window_width = 0;
 	fdf->window_height = 0;
 	ft_memset(fdf->min_points, 0, sizeof(t_point2) * 2);
@@ -76,23 +82,10 @@ int	init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols)
 	return (1);
 }
 
-int	free_map(void **map, int size)
-{
-	int	i;
-
-	if (!map)
-		return (0);
-	i = -1;
-	while (++i < size)
-		free(map[i]);
-	free(map);
-	return (1);
-}
-
 void	free_fdf(t_fdf *fdf)
 {
 	if (!fdf)
 		return ;
-	free_map((void **)fdf->origin_map, fdf->nb_rows);
-	free_map((void **)fdf->projected_map, fdf->nb_rows);
+	ft_free_map((void **)fdf->origin_map, fdf->nb_rows);
+	ft_free_map((void **)fdf->projected_map, fdf->nb_rows);
 }

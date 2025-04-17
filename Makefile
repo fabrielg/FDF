@@ -17,6 +17,7 @@ MINILIBX =			./mlx/libmlx.a
 
 SRCS = \
 	main.c\
+	menu.c\
 	parsing.c\
 	draw_line.c\
 	matrix.c\
