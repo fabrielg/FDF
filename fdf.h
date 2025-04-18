@@ -52,6 +52,7 @@ typedef struct s_img_data
 typedef struct s_fdf
 {
 	t_point3	**origin_map;
+	t_point3	**sphere_map;
 	t_point2	**projected_map;
 	int			nb_rows;
 	int			nb_cols;
@@ -68,6 +69,7 @@ typedef struct s_fdf
 int		parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns);
 int		init_fdf(t_fdf *fdf, int fd);
 int		init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols);
+int		init_sphere_map(t_fdf *fdf);
 void	free_fdf(t_fdf *fdf);
 void	put_str(t_fdf *fdf, int x, int y, char *str);
 void	display_info(t_fdf *fdf);
@@ -75,7 +77,8 @@ void	put_pixel(t_img_data *data, int x, int y, int color);
 void	draw_line(t_vector2 p0, t_vector2 p1, t_img_data *img, int color);
 void	init_min_max_points(t_fdf *fdf);
 int		init_scale_and_offsets(t_fdf *fdf);
-void	projection_iso(t_fdf *fdf);
+void	projection_iso(t_fdf *fdf, t_point3 **src);
+void	transformation_sphere(t_fdf *fdf);
 void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img);
 int		init_window(t_fdf *fdf);
 int		close_window(t_fdf *fdf);

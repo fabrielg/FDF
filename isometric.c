@@ -30,7 +30,7 @@ static void	apply_iso_to_point(t_point3 *src, t_point2 *dst, int sz, int off[2])
 	dst->v.axis[Y] = (x + y) * sin_a * sz - z * sz / 2 + off[Y];
 }
 
-void	projection_iso(t_fdf *fdf)
+void	projection_iso(t_fdf *fdf, t_point3 **src)
 {
 	int	i;
 	int	j;
@@ -41,11 +41,11 @@ void	projection_iso(t_fdf *fdf)
 		j = 0;
 		while (j < fdf->nb_cols)
 		{
-			apply_iso_to_point(&fdf->origin_map[i][j],
+			apply_iso_to_point(&src[i][j],
 				&fdf->projected_map[i][j],
 				fdf->projection.default_scale,
 				fdf->projection.offsets);
-			fdf->projected_map[i][j].color = fdf->origin_map[i][j].color;
+			fdf->projected_map[i][j].color = src[i][j].color;
 			j++;
 		}
 		i++;

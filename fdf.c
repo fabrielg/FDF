@@ -54,13 +54,20 @@ int	init_fdf(t_fdf *fdf, int fd)
 		return (0);
 	if (!init_window(fdf))
 		return (0);
-	projection_iso(fdf);
+	/*projection_iso(fdf, fdf->origin_map);
 	init_min_max_points(fdf);
 	if (!init_scale_and_offsets(fdf))
 		return (0);
-	projection_iso(fdf);
+	projection_iso(fdf, fdf->origin_map);
 	if (!fdf->projected_map)
+		return (0);*/
+	if (!init_sphere_map(fdf))
 		return (0);
+	projection_iso(fdf, fdf->sphere_map);
+	init_min_max_points(fdf);
+	if (!init_scale_and_offsets(fdf))
+		return (0);
+	projection_iso(fdf, fdf->sphere_map);
 	return (1);
 }
 

@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME =				fdf
-CFLAGS =			-Wall -Wextra -Werror
+CFLAGS =			#-Wall -Wextra -Werror
 LIBFT =				./libft/libft.a
 MINILIBX =			./mlx/libmlx.a
 
@@ -24,6 +24,7 @@ SRCS = \
 	fdf.c\
 	isometric.c\
 	projection.c\
+	spherical.c\
 	window_utils.c
 
 OBJ_DIR = obj
