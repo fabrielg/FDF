@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 21:04:17 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:19:46 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,12 @@ static int	handle_mouse_action(int button, int x, int y, void *param)
 	fdf = (t_fdf *)param;
 	(void)x;
 	(void)y;
-	if (button == MOUSE_SCROLL_DOWN)
+	if (button == MOUSE_SCROLL_DOWN && fdf->projection.scale < 10000)
+	{
 		fdf->projection.scale *= 1.2;
+		if (fdf->projection.scale > 10000)
+			fdf->projection.scale = 10000;
+	}
 	else if (button == MOUSE_SCROLL_UP && fdf->projection.scale > 0.5)
 		fdf->projection.scale /= 1.2;
 	else

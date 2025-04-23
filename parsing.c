@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 17:07:16 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:12:25 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@ static t_list	*get_lines_from_file(int fd)
 	}
 	close(fd);
 	return (lines);
-}
-
-static void	ft_upper(char *str)
-{
-	while (*str)
-	{
-		if ('a' <= *str && *str <= 'z')
-			*str += -32;
-		str++;
-	}
 }
 
 static int	parse_line(const char *line, t_point3 **p, int y, int *cols)
