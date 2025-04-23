@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/07 17:54:45 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 11:20:10 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,39 @@
 #include "./mlx/mlx.h"
 #include "./mlx/mlx_int.h"
 #include "matrix.h"
+#include "keycodes.h"
 #include <math.h>
+
+static void	window_update(t_fdf *fdf)
+{
+	projection_iso(fdf);
+	if (!fdf->projected_map)
+		return ;
+	ft_super_memset(fdf->projection.addr,
+		&fdf->projection.bg_color,
+		(fdf->projection.height) * (fdf->projection.width),
+		sizeof(int));
+	draw_map(fdf->projected_map, fdf->nb_rows, fdf->nb_cols, &fdf->projection);
+	mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->projection.img,
+		fdf->menu.width, 0);
+	mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->menu.img, 0, 0);
+	display_info(fdf);
+}
 
 static int	handle_key_pressed(int keycode, t_fdf *fdf)
 {
-	if (keycode == 65307)
+	if (keycode == KEY_ESC)
 		close_window(fdf);
+	if (keycode == KEY_SUM || keycode == KEY_SUM2)
+	{
+		fdf->projection.z_divisor += 0.05f;
+		if (fdf->projection.z_divisor > 1.0f)
+			fdf->projection.z_divisor = 0.1f;
+	}
+	if ((keycode == KEY_DIF || keycode == KEY_DIF2)
+		&& fdf->projection.z_divisor > 0.0f)
+		fdf->projection.z_divisor /= 1.2f;
+	window_update(fdf);
 	return (0);
 }
 
