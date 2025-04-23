@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:04:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 12:47:44 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:35:07 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	projection_parallel(t_fdf *fdf)
 		while (j < fdf->nb_cols)
 		{
 			fdf->projected_map[i][j].v.axis[X] = fdf->origin_map[i][j].v.axis[X]
-					* fdf->projection.default_scale;
+					* fdf->projection.scale;
 			fdf->projected_map[i][j].v.axis[Y] = fdf->origin_map[i][j].v.axis[Y]
-					* fdf->projection.default_scale; 
+					* fdf->projection.scale; 
 			fdf->projected_map[i][j].color = fdf->origin_map[i][j].color;
 			j++;
 		}

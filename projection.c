@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:05:48 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 15:45:45 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:34:36 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	init_scale_and_offsets(t_fdf *fdf)
 	scale_x = (fdf->projection.width * margin) / proj_width;
 	scale_y = (fdf->projection.height * margin) / proj_height;
 	fdf->projection.default_scale = ft_min(scale_x, scale_y);
+	fdf->projection.scale = fdf->projection.default_scale;
 	fdf->projection.offsets[X] = (fdf->projection.width - proj_width
 			* fdf->projection.default_scale)
 		/ 2 - fdf->min_points[X]->v.axis[X] * fdf->projection.default_scale;

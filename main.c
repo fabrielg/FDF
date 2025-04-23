@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 15:48:14 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:04:17 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "matrix.h"
 #include "keycodes.h"
 #include <math.h>
+#include <float.h>
 
 static void	window_update(t_fdf *fdf)
 {
@@ -31,24 +32,43 @@ static void	window_update(t_fdf *fdf)
 	mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->projection.img,
 		fdf->menu.width, 0);
 	mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->menu.img, 0, 0);
-	display_info(fdf);
+	display_menu(fdf);
 }
 
 static int	handle_key_pressed(int keycode, t_fdf *fdf)
 {
 	if (keycode == KEY_ESC)
 		close_window(fdf);
-	if (keycode == KEY_SUM || keycode == KEY_SUM2)
+	else if (keycode == KEY_SUM || keycode == KEY_SUM2)
 	{
 		fdf->projection.z_divisor += 0.05f;
 		if (fdf->projection.z_divisor > 1.0f)
 			fdf->projection.z_divisor = 0.1f;
 	}
-	if ((keycode == KEY_DIF || keycode == KEY_DIF2)
+	else if ((keycode == KEY_DIF || keycode == KEY_DIF2)
 		&& fdf->projection.z_divisor > 0.0f)
 		fdf->projection.z_divisor /= 1.2f;
-	if (keycode == KEY_I || keycode == KEY_P)
+	else if (keycode == KEY_I || keycode == KEY_P)
 		fdf->projection.proj = keycode;
+	else
+		return (0);
+	window_update(fdf);
+	return (0);
+}
+
+static int	handle_mouse_action(int button, int x, int y, void *param)
+{
+	t_fdf	*fdf;
+
+	fdf = (t_fdf *)param;
+	(void)x;
+	(void)y;
+	if (button == MOUSE_SCROLL_DOWN)
+		fdf->projection.scale *= 1.2;
+	else if (button == MOUSE_SCROLL_UP && fdf->projection.scale > 0.5)
+		fdf->projection.scale /= 1.2;
+	else
+		return (0);
 	window_update(fdf);
 	return (0);
 }
@@ -73,8 +93,9 @@ int	main(int ac, char **av)
 	mlx_put_image_to_window(fdf.mlx, fdf.window, fdf.projection.img,
 		fdf.menu.width, 0);
 	mlx_put_image_to_window(fdf.mlx, fdf.window, fdf.menu.img, 0, 0);
-	display_info(&fdf);
+	display_menu(&fdf);
 	mlx_hook(fdf.window, 2, 1L << 0, handle_key_pressed, &fdf);
+	mlx_hook(fdf.window, 4, 1L << 2, handle_mouse_action, &fdf);
 	mlx_hook(fdf.window, 17, 0, close_window, &fdf);
 	mlx_loop(fdf.mlx);
 	close_window(&fdf);

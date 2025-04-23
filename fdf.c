@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 12:29:32 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:33:43 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	init_img(t_img_data *image)
 	image->bg_color = 0;
 	image->bits_per_pixel = 8;
 	image->default_scale = 1;
+	image->scale = image->default_scale;
 	image->endian = 0;
 	image->height = 0;
 	image->width = 0;

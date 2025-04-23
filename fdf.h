@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 12:26:14 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 21:03:57 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_img_data
 	int		height;
 	int		proj;
 	float	default_scale;
+	float	scale;
 	int		offsets[2];
 	float	z_divisor;
 	int		bg_color;
@@ -72,7 +73,7 @@ int		init_fdf(t_fdf *fdf, int fd);
 int		init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols);
 void	free_fdf(t_fdf *fdf);
 void	put_str(t_fdf *fdf, int x, int y, char *str);
-void	display_info(t_fdf *fdf);
+void	display_menu(t_fdf *fdf);
 void	put_pixel(t_img_data *data, int x, int y, int color);
 void	draw_line(t_vector2 p0, t_vector2 p1, t_img_data *img, int color);
 void	init_min_max_points(t_fdf *fdf);
