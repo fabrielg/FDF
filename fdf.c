@@ -6,11 +6,12 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 10:13:22 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:29:32 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "keycodes.h"
 #include "./libft/libft.h"
 #include <math.h>
 
@@ -24,6 +25,7 @@ static void	init_img(t_img_data *image)
 	image->height = 0;
 	image->width = 0;
 	image->line_length = 0;
+	image->proj = KEY_I;
 	image->offsets[X] = 0;
 	image->offsets[Y] = 0;
 	image->z_divisor = 0.1f;
@@ -55,11 +57,11 @@ int	init_fdf(t_fdf *fdf, int fd)
 		return (0);
 	if (!init_window(fdf))
 		return (0);
-	projection_iso(fdf);
+	project(fdf);
 	init_min_max_points(fdf);
 	if (!init_scale_and_offsets(fdf))
 		return (0);
-	projection_iso(fdf);
+	project(fdf);
 	if (!fdf->projected_map)
 		return (0);
 	return (1);

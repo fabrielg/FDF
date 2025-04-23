@@ -6,11 +6,12 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:05:48 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/16 17:11:28 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:45:45 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "keycodes.h"
 #include "./libft/libft.h"
 
 void	init_min_max_points(t_fdf *fdf)
@@ -53,11 +54,10 @@ int	init_scale_and_offsets(t_fdf *fdf)
 	margin = 0.9;
 	proj_width = fdf->max_points[X]->v.axis[X] - fdf->min_points[X]->v.axis[X];
 	proj_height = fdf->max_points[Y]->v.axis[Y] - fdf->min_points[Y]->v.axis[Y];
-	if (proj_width == 0 || proj_height == 0)
-	{
-		ft_putendl_fd("Error: Projection width or height is zero", 2);
-		return (0);
-	}
+	if (proj_width == 0)
+		proj_width = 0.01f;
+	if (proj_height == 0)
+		proj_height = 0.01f;
 	scale_x = (fdf->projection.width * margin) / proj_width;
 	scale_y = (fdf->projection.height * margin) / proj_height;
 	fdf->projection.default_scale = ft_min(scale_x, scale_y);
@@ -91,4 +91,12 @@ void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img)
 		}
 		i++;
 	}
+}
+
+void	project(t_fdf *fdf)
+{
+	if (fdf->projection.proj == KEY_I)
+		projection_iso(fdf);
+	else if (fdf->projection.proj == KEY_P)
+		projection_parallel(fdf);
 }

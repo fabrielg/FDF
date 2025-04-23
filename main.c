@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 11:20:10 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:48:14 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 static void	window_update(t_fdf *fdf)
 {
-	projection_iso(fdf);
+	project(fdf);
 	if (!fdf->projected_map)
 		return ;
 	ft_super_memset(fdf->projection.addr,
@@ -47,6 +47,8 @@ static int	handle_key_pressed(int keycode, t_fdf *fdf)
 	if ((keycode == KEY_DIF || keycode == KEY_DIF2)
 		&& fdf->projection.z_divisor > 0.0f)
 		fdf->projection.z_divisor /= 1.2f;
+	if (keycode == KEY_I || keycode == KEY_P)
+		fdf->projection.proj = keycode;
 	window_update(fdf);
 	return (0);
 }

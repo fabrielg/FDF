@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 10:13:04 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:26:14 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_img_data
 	int		endian;
 	int		width;
 	int		height;
+	int		proj;
 	float	default_scale;
 	int		offsets[2];
 	float	z_divisor;
@@ -77,6 +78,8 @@ void	draw_line(t_vector2 p0, t_vector2 p1, t_img_data *img, int color);
 void	init_min_max_points(t_fdf *fdf);
 int		init_scale_and_offsets(t_fdf *fdf);
 void	projection_iso(t_fdf *fdf);
+void	projection_parallel(t_fdf *fdf);
+void	project(t_fdf *fdf);
 void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img);
 int		init_window(t_fdf *fdf);
 int		close_window(t_fdf *fdf);

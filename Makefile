@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/04/16 16:45:04 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/04/23 12:20:05 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS = \
 	matrix.c\
 	fdf.c\
 	isometric.c\
+	parallel.c\
 	projection.c\
 	window_utils.c
 
