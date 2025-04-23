@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/16 21:32:17 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:07:16 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ static t_list	*get_lines_from_file(int fd)
 	return (lines);
 }
 
+static void	ft_upper(char *str)
+{
+	while (*str)
+	{
+		if ('a' <= *str && *str <= 'z')
+			*str += -32;
+		str++;
+	}
+}
+
 static int	parse_line(const char *line, t_point3 **p, int y, int *cols)
 {
 	char	**split;
@@ -42,17 +52,17 @@ static int	parse_line(const char *line, t_point3 **p, int y, int *cols)
 	*p = malloc(*cols * sizeof(t_point3));
 	if (!*p)
 		return (free_split(split), 0);
-	x = 0;
-	while (x < *cols)
+	x = -1;
+	while (++x < *cols)
 	{
 		(*p + x)->color = 0xFFFFFF;
 		(*p + x)->v.axis[X] = x;
 		(*p + x)->v.axis[Y] = y;
 		(*p + x)->v.axis[Z] = ft_atoi(split[x]);
 		end = ft_strchr(split[x], ',');
-		if (end && !ft_strncmp(end, ",0x", 3))
+		ft_upper(end);
+		if (end && !ft_strncmp(end, ",0X", 3))
 			(*p + x)->color = ft_atoi_base(end + 3, "0123456789ABCDEF");
-		x++;
 	}
 	free_split(split);
 	return (1);
