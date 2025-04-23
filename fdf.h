@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/07 16:27:27 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 10:13:04 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_img_data
 	int		height;
 	float	default_scale;
 	int		offsets[2];
+	float	z_divisor;
 	int		bg_color;
 }	t_img_data;
 

@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/16 17:11:13 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/23 10:13:22 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	init_img(t_img_data *image)
 	image->line_length = 0;
 	image->offsets[X] = 0;
 	image->offsets[Y] = 0;
+	image->z_divisor = 0.1f;
 	image->img = NULL;
 }
 
