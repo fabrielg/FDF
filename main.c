@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 21:19:46 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:28:00 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,15 @@ static int	handle_key_pressed(int keycode, t_fdf *fdf)
 	else if (keycode == KEY_SUM || keycode == KEY_SUM2)
 	{
 		fdf->projection.z_divisor += 0.05f;
-		if (fdf->projection.z_divisor > 1.0f)
-			fdf->projection.z_divisor = 0.1f;
+		if (fdf->projection.z_divisor >= 1.05f)
+			fdf->projection.z_divisor = 0.0f;
 	}
-	else if ((keycode == KEY_DIF || keycode == KEY_DIF2)
-		&& fdf->projection.z_divisor > 0.0f)
-		fdf->projection.z_divisor /= 1.2f;
+	else if ((keycode == KEY_DIF || keycode == KEY_DIF2))
+	{
+		fdf->projection.z_divisor -= 0.05f;
+		if (fdf->projection.z_divisor < 0.0f)
+			fdf->projection.z_divisor = 1.0f;
+	}
 	else if (keycode == KEY_I || keycode == KEY_P)
 		fdf->projection.proj = keycode;
 	else
