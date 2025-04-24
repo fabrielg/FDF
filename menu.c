@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:33:17 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 21:07:23 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:55:52 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	display_controls(t_fdf *fdf)
 	put_str(fdf, 30, 80, "ESC: QUIT");
 	put_str(fdf, 30, 100, "+/-: Z DIVISOR");
 	put_str(fdf, 30, 120, "SCROLL: ZOOM IN/OUT");
+	put_str(fdf, 30, 140, "P/I: PARALLEL/ISOMETRIC");
 }
 
 static void	display_infos(t_fdf *fdf)
@@ -37,23 +38,23 @@ static void	display_infos(t_fdf *fdf)
 
 	z_divisor = ft_itoa(fdf->projection.z_divisor * 100);
 	scale = ft_itoa(fdf->projection.scale);
-	put_str(fdf, 30, 150, "=== FDF INFOS ===");
-	put_str(fdf, 30, 180, "Z DIVISOR : ");
+	put_str(fdf, 30, 170, "=== FDF INFOS ===");
+	put_str(fdf, 30, 200, "Z DIVISOR : ");
 	if (z_divisor)
 	{
-		put_str(fdf, 110, 180, z_divisor);
+		put_str(fdf, 110, 200, z_divisor);
 		free(z_divisor);
 	}
 	else
-		put_str(fdf, 110, 180, "ERROR");
-	put_str(fdf, 30, 200, "SCALE : ");
+		put_str(fdf, 110, 200, "ERROR");
+	put_str(fdf, 30, 220, "SCALE : ");
 	if (scale)
 	{
-		put_str(fdf, 110, 200, scale);
+		put_str(fdf, 110, 220, scale);
 		free(scale);
 	}
 	else
-		put_str(fdf, 110, 200, "ERROR");
+		put_str(fdf, 110, 220, "ERROR");
 }
 
 void	display_menu(t_fdf *fdf)
