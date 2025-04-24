@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/24 14:35:49 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:30:36 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 #include "keycodes.h"
 #include <math.h>
 
-static void	window_update(t_fdf *fdf)
+static void	window_update(t_fdf *fdf, int p)
 {
-	project(fdf);
+	if (p)
+		project(fdf);
 	if (!fdf->projected_map)
 		return ;
 	ft_super_memset(fdf->projection.addr,
@@ -32,6 +33,25 @@ static void	window_update(t_fdf *fdf)
 		fdf->menu.width, 0);
 	mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->menu.img, 0, 0);
 	display_menu(fdf);
+}
+
+static void	translate(t_fdf *fdf, int x, int y)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	while (j < fdf->nb_rows)
+	{
+		i = 0;
+		while (i < fdf->nb_cols)
+		{
+			fdf->projected_map[j][i].v.axis[X] += x;
+			fdf->projected_map[j][i].v.axis[Y] += y;
+			i++;
+		}
+		j++;
+	}
 }
 
 static int	handle_key_pressed(int keycode, t_fdf *fdf)
@@ -52,9 +72,14 @@ static int	handle_key_pressed(int keycode, t_fdf *fdf)
 	}
 	else if (keycode == KEY_I || keycode == KEY_P)
 		fdf->projection.proj = keycode;
+	else if (KEY_LEFT <= keycode && keycode <= KEY_DOWN)
+		return (translate(fdf,
+			-(keycode == KEY_LEFT) * 20 + (keycode == KEY_RIGHT) * 20,
+			-(keycode == KEY_UP) * 20 + (keycode == KEY_DOWN) * 20),
+			window_update(fdf, 0), 0);
 	else
 		return (0);
-	window_update(fdf);
+	window_update(fdf, 1);
 	return (0);
 }
 
@@ -75,7 +100,7 @@ static int	handle_mouse_action(int button, int x, int y, void *param)
 		fdf->projection.scale /= 1.2;
 	else
 		return (0);
-	window_update(fdf);
+	window_update(fdf, 1);
 	return (0);
 }
 
