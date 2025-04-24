@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/24 14:28:00 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:35:49 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "matrix.h"
 #include "keycodes.h"
 #include <math.h>
-#include <float.h>
 
 static void	window_update(t_fdf *fdf)
 {
