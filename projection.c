@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:05:48 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 20:34:36 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:23:50 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img)
 		while (j < nb_cols)
 		{
 			if (j + 1 < nb_cols)
-				draw_line(map[i][j].v, map[i][j + 1].v, img, map[i][j].color);
+				draw_line(map[i][j], map[i][j + 1], img);
 			if (i + 1 < nb_rows)
-				draw_line(map[i][j].v, map[i + 1][j].v, img, map[i][j].color);
+				draw_line(map[i][j], map[i + 1][j], img);
 			j++;
 		}
 		i++;
