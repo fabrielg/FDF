@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 18:45:19 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:07:12 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_img_data
 typedef struct s_map
 {
 	t_point3	**points;
+	t_point2	**projection;
 	t_vector3	limits;
 	int			cols;
 	int			rows;

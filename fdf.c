@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 18:40:53 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:16:31 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "./mlx/mlx_int.h"
 #include <math.h>
 
-static void	system_init(t_fdf *fdf)
+static void	init_system(t_fdf *fdf)
 {
 	fdf->libx.mlx = mlx_init();
 	fdf->libx.win = mlx_new_window(fdf->libx.mlx, WIN_WIDTH, WIN_HEIGHT,
@@ -29,12 +29,35 @@ static void	system_init(t_fdf *fdf)
 		&fdf->img_datas.endian);
 }
 
+static int	init_projection(t_fdf *fdf)
+{
+	int	y;
+
+	fdf->map.projection = ft_calloc(fdf->map.cols, sizeof(t_point2 *));
+	if (!fdf->map.projection)
+		return (0);
+	y = 0;
+	while (y < fdf->map.cols)
+	{
+		fdf->map.projection[y] = malloc(fdf->map.rows * sizeof(t_point2));
+		if (!fdf->map.projection[y])
+		{
+			ft_free_map((void **)fdf->map.projection, y);
+			return (0);
+		}
+		y++;
+	}
+	return (1);
+}
+
 int	init_fdf(t_fdf *fdf, int fd)
 {
 	ft_memset(fdf, 0, sizeof(t_fdf));
 	if (!parse_map(&(fdf->map), fd))
 		return (0);
-	system_init(fdf);
+	if (!init_projection(fdf))
+		return (0);
+	init_system(fdf);
 	return (1);
 }
 
