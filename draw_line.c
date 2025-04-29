@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 11:45:35 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/24 15:45:17 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:44:04 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	put_pixel(t_img_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x < 0 || data->width < x || y < 0 || data->height < y)
+	if (x < 0 || WIN_WIDTH < x || y < 0 || WIN_HEIGHT < y)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;

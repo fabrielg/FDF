@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 21:12:25 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:31:26 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static t_point3	**get_map_from_lines(t_list *lines, int nb_rows, int *nb_cols)
 	return (map);
 }
 
-int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
+int	parse_map(t_map *map, int fd)
 {
 	t_list	*lines;
 
@@ -89,10 +89,10 @@ int	parse(t_point3 ***map, int fd, int *nb_rows, int *nb_columns)
 	lines = get_lines_from_file(fd);
 	if (!lines)
 		return (0);
-	*nb_rows = ft_lstsize(lines);
-	*nb_columns = 2147483647;
-	(*map) = get_map_from_lines(lines, *nb_rows, nb_columns);
-	if (!*map)
+	map->rows = ft_lstsize(lines);
+	map->cols = 2147483647;
+	map->points = get_map_from_lines(lines, map->rows, &map->cols);
+	if (!map->points)
 	{
 		ft_lstclear(&lines, free);
 		return (0);

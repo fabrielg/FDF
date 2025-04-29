@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/04/24 15:24:49 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/04/29 18:45:46 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,16 +17,11 @@ MINILIBX =			./mlx/libmlx.a
 
 SRCS = \
 	main.c\
-	menu.c\
-	parsing.c\
-	draw_line.c\
-	color_utils.c\
-	matrix.c\
 	fdf.c\
-	isometric.c\
-	parallel.c\
-	projection.c\
-	window_utils.c
+	parsing.c\
+	window_utils.c\
+	draw_line.c\
+	color_utils.c
 
 OBJ_DIR = obj
 
