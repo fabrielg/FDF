@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:05:48 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/23 20:34:54 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 14:19:44 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	projection_iso(t_fdf *fdf)
 		while (j < fdf->nb_cols)
 		{
 			apply_iso_to_point(fdf,
-				&fdf->origin_map[i][j],
+				&fdf->copy[i][j],
 				&fdf->projected_map[i][j]);
 			fdf->projected_map[i][j].color = fdf->origin_map[i][j].color;
 			j++;

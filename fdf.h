@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/24 15:23:32 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:53:59 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_img_data
 typedef struct s_fdf
 {
 	t_point3	**origin_map;
+	t_point3	**copy;
 	t_point2	**projected_map;
 	int			nb_rows;
 	int			nb_cols;

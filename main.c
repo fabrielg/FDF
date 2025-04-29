@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/24 17:30:36 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 14:18:52 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,39 @@ static void	translate(t_fdf *fdf, int x, int y)
 	}
 }
 
+void	rot_y(t_vector3 *out, t_vector3 *in, float theta)
+{
+	float	cos;
+	float	sin;
+
+	cos = cosf(theta);
+	sin = sinf(theta);
+	out->axis[X] = in->axis[X] * cos - in->axis[Z] * sin;
+	out->axis[Y] = in->axis[Y];
+	out->axis[Z] = in->axis[X] * sin + in->axis[Z] * cos;
+}
+
+void	apply_rotation(t_fdf *fdf)
+{
+	t_point3	**map;
+	int			x;
+	int			y;
+
+	map = fdf->copy;
+	y = 0;
+	ft_putendl_fd("cc", 1);
+	while (y < fdf->nb_rows)
+	{
+		x = 0;
+		while (x < fdf->nb_cols)
+		{
+			rot_y(&map[y][x].v, &fdf->origin_map[y][x].v, 2.0f);
+			x++;
+		}
+		y++;
+	}
+}
+
 static int	handle_key_pressed(int keycode, t_fdf *fdf)
 {
 	if (keycode == KEY_ESC)
@@ -77,6 +110,10 @@ static int	handle_key_pressed(int keycode, t_fdf *fdf)
 			-(keycode == KEY_LEFT) * 20 + (keycode == KEY_RIGHT) * 20,
 			-(keycode == KEY_UP) * 20 + (keycode == KEY_DOWN) * 20),
 			window_update(fdf, 0), 0);
+	else if (keycode == KEY_A)
+	{
+		apply_rotation(fdf);
+	}
 	else
 		return (0);
 	window_update(fdf, 1);
