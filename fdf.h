@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 19:07:12 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:28:54 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_map
 	float		scale;
 	float		z_coeff;
 	int			menu_width;
+	int			bg_color;
 }	t_map;
 
 typedef struct s_libx {
@@ -67,5 +68,7 @@ int		close_window(t_fdf *fdf);
 void	put_pixel(t_img_data *data, int x, int y, int color);
 void	draw_line(t_point2 p0, t_point2 p1, t_img_data *img);
 int		lerp_rgb(int c1, int c2, float t);
+void	generate_background(t_fdf *fdf);
+void	draw_map(t_fdf *fdf);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 18:42:14 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:35:14 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ int	main(int ac, char **av)
 		close_window(&fdf);
 		return (0);
 	}
-	mlx_put_image_to_window(fdf.libx.mlx, fdf.libx.win, fdf.img_datas.img, 0, 0);
+	draw_map(&fdf);
+	mlx_put_image_to_window(fdf.libx.mlx, fdf.libx.win, fdf.img_datas.img,
+		0, 0);
 	mlx_hook(fdf.libx.win, 17, 0, close_window, &fdf);
 	mlx_loop(fdf.libx.mlx);
 	close_window(&fdf);

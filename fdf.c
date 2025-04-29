@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 19:16:31 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:34:58 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,18 @@
 #include "./mlx/mlx_int.h"
 #include <math.h>
 
+#define WIN_BG_COLOR 0x16151f
+
 static void	init_system(t_fdf *fdf)
 {
 	fdf->libx.mlx = mlx_init();
 	fdf->libx.win = mlx_new_window(fdf->libx.mlx, WIN_WIDTH, WIN_HEIGHT,
-	"FDF 42 - gfrancoi");
+			"FDF 42 - gfrancoi");
 	fdf->img_datas.img = mlx_new_image(fdf->libx.mlx, WIN_WIDTH, WIN_HEIGHT);
 	fdf->img_datas.addr = mlx_get_data_addr(fdf->img_datas.img,
-		&fdf->img_datas.bits_per_pixel,
-		&fdf->img_datas.line_length,
-		&fdf->img_datas.endian);
+			&fdf->img_datas.bits_per_pixel,
+			&fdf->img_datas.line_length,
+			&fdf->img_datas.endian);
 }
 
 static int	init_projection(t_fdf *fdf)
@@ -58,6 +60,7 @@ int	init_fdf(t_fdf *fdf, int fd)
 	if (!init_projection(fdf))
 		return (0);
 	init_system(fdf);
+	fdf->map.bg_color = WIN_BG_COLOR;
 	return (1);
 }
 
@@ -66,4 +69,5 @@ void	free_fdf(t_fdf *fdf)
 	if (!fdf)
 		return ;
 	ft_free_map((void **)fdf->map.points, fdf->map.cols);
+	ft_free_map((void **)fdf->map.projection, fdf->map.cols);
 }

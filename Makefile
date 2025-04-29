@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/04/29 18:45:46 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/04/29 19:29:37 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRCS = \
 	parsing.c\
 	window_utils.c\
 	draw_line.c\
+	draw_map.c\
+	draw_utils.c\
 	color_utils.c
 
 OBJ_DIR = obj
