@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 19:34:58 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:27:55 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,26 @@ static void	init_system(t_fdf *fdf)
 static int	init_projection(t_fdf *fdf)
 {
 	int	y;
+	int	x;
 
-	fdf->map.projection = ft_calloc(fdf->map.cols, sizeof(t_point2 *));
-	if (!fdf->map.projection)
+	fdf->map.proj = ft_calloc(fdf->map.cols, sizeof(t_point2 *));
+	if (!fdf->map.proj)
 		return (0);
-	y = 0;
-	while (y < fdf->map.cols)
+	y = -1;
+	while (++y < fdf->map.cols)
 	{
-		fdf->map.projection[y] = malloc(fdf->map.rows * sizeof(t_point2));
-		if (!fdf->map.projection[y])
+		fdf->map.proj[y] = malloc(fdf->map.rows * sizeof(t_point2));
+		if (!fdf->map.proj[y])
+			return (ft_free_map((void **)fdf->map.proj, y), 0);
+		x = -1;
+		while (++x < fdf->map.cols)
 		{
-			ft_free_map((void **)fdf->map.projection, y);
-			return (0);
+			fdf->map.proj[y][x].color = fdf->map.points[y][x].color;
+			fdf->map.proj[y][x].default_color
+				= fdf->map.points[y][x].default_color;
+			fdf->map.proj[y][x].v.axis[X] = fdf->map.points[y][x].v.axis[X];
+			fdf->map.proj[y][x].v.axis[Y] = fdf->map.points[y][x].v.axis[Y];
 		}
-		y++;
 	}
 	return (1);
 }
@@ -69,5 +75,5 @@ void	free_fdf(t_fdf *fdf)
 	if (!fdf)
 		return ;
 	ft_free_map((void **)fdf->map.points, fdf->map.cols);
-	ft_free_map((void **)fdf->map.projection, fdf->map.cols);
+	ft_free_map((void **)fdf->map.proj, fdf->map.cols);
 }

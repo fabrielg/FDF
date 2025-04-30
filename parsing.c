@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:57:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 18:31:26 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:30:37 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ static int	parse_line(const char *line, t_point3 **p, int y, int *cols)
 	x = -1;
 	while (++x < *cols)
 	{
-		(*p + x)->color = 0xFFFFFF;
+		(*p + x)->default_color = 0xFFFFFF;
 		(*p + x)->v.axis[X] = x;
 		(*p + x)->v.axis[Y] = y;
 		(*p + x)->v.axis[Z] = ft_atoi(split[x]);
 		end = ft_strchr(split[x], ',');
 		ft_upper(end);
 		if (end && !ft_strncmp(end, ",0X", 3))
-			(*p + x)->color = ft_atoi_base(end + 3, "0123456789ABCDEF");
+			(*p + x)->default_color = ft_atoi_base(end + 3, "0123456789ABCDEF");
+		(*p + x)->color = (*p + x)->default_color;
 	}
-	free_split(split);
-	return (1);
+	return (free_split(split), 1);
 }
 
 static t_point3	**get_map_from_lines(t_list *lines, int nb_rows, int *nb_cols)

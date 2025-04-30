@@ -6,11 +6,12 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:04:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 21:03:32 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:31:01 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "./libft/libft.h"
 
 static void	wire(t_fdf *fdf)
 {
@@ -19,7 +20,7 @@ static void	wire(t_fdf *fdf)
 	int			y;
 
 	y = 0;
-	projection = fdf->map.projection;
+	projection = fdf->map.proj;
 	while (y < fdf->map.rows)
 	{
 		x = 0;
