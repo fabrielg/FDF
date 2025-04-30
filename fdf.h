@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 14:04:47 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:11:34 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_map
 	t_point3	**points;
 	t_point2	**proj;
 	t_vector2	limits[2];
+	t_vector2	offsets;
 	int			size;
 	int			cols;
 	int			rows;
@@ -70,6 +71,7 @@ void	free_fdf(t_fdf *fdf);
 int		close_window(t_fdf *fdf);
 void	put_pixel(t_img_data *data, int x, int y, int color);
 void	draw_line(t_point2 p0, t_point2 p1, t_img_data *img);
+void	apply_projection(t_map *map);
 int		lerp_rgb(int c1, int c2, float t);
 void	generate_background(t_fdf *fdf);
 void	draw_map(t_fdf *fdf);

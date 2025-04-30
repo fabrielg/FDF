@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 14:56:32 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:13:13 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,12 @@ int	init_fdf(t_fdf *fdf, int fd)
 	if (!init_projection(fdf))
 		return (0);
 	fdf->map.bg_color = WIN_BG_COLOR;
-	fdf->map.scale = 1;
+	fdf->map.scale = 50;
+	fdf->map.offsets.axis[X] = 400;
+	fdf->map.offsets.axis[Y] = 400;
 	set_limits(&fdf->map);
 	init_system(fdf);
+	apply_projection(&fdf->map);
 	return (1);
 }
 
