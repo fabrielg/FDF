@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 15:11:34 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:20:31 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,17 @@ typedef struct s_fdf
 
 int		parse_map(t_map *map, int fd);
 void	center_map_pivot(t_map *map);
-void	set_limits(t_map *map);
 int		init_fdf(t_fdf *fdf, int fd);
 void	free_fdf(t_fdf *fdf);
 int		close_window(t_fdf *fdf);
 void	put_pixel(t_img_data *data, int x, int y, int color);
 void	draw_line(t_point2 p0, t_point2 p1, t_img_data *img);
 void	apply_projection(t_map *map);
-int		lerp_rgb(int c1, int c2, float t);
 void	generate_background(t_fdf *fdf);
+void	set_limits(t_map *map);
+void	set_scale(t_map *map);
+void	set_offsets(t_map *map);
+int		lerp_rgb(int c1, int c2, float t);
 void	draw_map(t_fdf *fdf);
 
 #endif

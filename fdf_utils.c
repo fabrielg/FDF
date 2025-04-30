@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:04:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 14:04:33 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:25:11 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,33 @@ void	set_limits(t_map *map)
 				map->limits[1].axis[Y] = map->proj[y][x].v.axis[Y];
 		}
 	}
+}
+
+void	set_scale(t_map *map)
+{
+	t_vector2	scales;
+
+	scales.axis[X] = (float)WIN_WIDTH
+		/ (float)(map->limits[1].axis[X] + 1 - map->limits[0].axis[X]);
+	scales.axis[Y] = (float)WIN_HEIGHT
+		/ (float)(map->limits[1].axis[Y] + 1 - map->limits[0].axis[Y]);
+	if (scales.axis[X] < scales.axis[Y])
+		map->scale = scales.axis[X] * 1.0f;
+	else
+		map->scale = scales.axis[Y] * 1.0f;
+}
+
+void	set_offsets(t_map *map)
+{
+	t_vector2	proj_center;
+	t_vector2	win_center;
+
+	proj_center.axis[X] = ((map->limits[0].axis[X] + map->limits[1].axis[X])
+			* map->scale / 2);
+	proj_center.axis[Y] = ((map->limits[0].axis[Y] + map->limits[1].axis[Y])
+			* map->scale / 2);
+	win_center.axis[X] = WIN_WIDTH / 2;
+	win_center.axis[Y] = WIN_HEIGHT / 2;
+	map->offsets.axis[X] = win_center.axis[X] - proj_center.axis[X];
+	map->offsets.axis[Y] = win_center.axis[Y] - proj_center.axis[Y];
 }
