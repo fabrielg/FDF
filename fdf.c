@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 14:07:57 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:56:32 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ int	init_fdf(t_fdf *fdf, int fd)
 		return (0);
 	fdf->map.bg_color = WIN_BG_COLOR;
 	fdf->map.scale = 1;
-	ft_printf("minx:%d miny:%d maxx:%d maxy:%d\n", fdf->map.limits[0].axis[X], fdf->map.limits[0].axis[Y], fdf->map.limits[1].axis[X], fdf->map.limits[1].axis[Y]);
 	set_limits(&fdf->map);
-	ft_printf("minx:%d miny:%d maxx:%d maxy:%d\n", fdf->map.limits[0].axis[X], fdf->map.limits[0].axis[Y], fdf->map.limits[1].axis[X], fdf->map.limits[1].axis[Y]);
 	init_system(fdf);
 	return (1);
 }
