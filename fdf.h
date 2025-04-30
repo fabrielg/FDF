@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 13:27:24 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:41:50 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_map
 	t_point3	**points;
 	t_point2	**proj;
 	t_vector3	limits;
+	int			size;
 	int			cols;
 	int			rows;
 	float		camera[3];

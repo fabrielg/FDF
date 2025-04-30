@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 13:27:55 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:46:13 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,35 @@ static int	init_projection(t_fdf *fdf)
 	return (1);
 }
 
+static void	center_map_pivot(t_map *map)
+{
+	t_vector3	pivot;
+	int			x;
+	int			y;
+
+	pivot.axis[X] = (float)(map->rows / 2);
+	pivot.axis[Y] = (float)((map->size / map->rows) / 2);
+	pivot.axis[Z] = 0;
+	y = -1;
+	while (++y < map->rows)
+	{
+		x = -1;
+		while (++x < map->cols)
+		{
+			map->points[y][x].v.axis[X] -= pivot.axis[X];
+			map->points[y][x].v.axis[Y] -= pivot.axis[Y];
+			map->points[y][x].v.axis[Z] -= pivot.axis[Z];
+		}
+	}
+}
+
 int	init_fdf(t_fdf *fdf, int fd)
 {
 	ft_memset(fdf, 0, sizeof(t_fdf));
 	if (!parse_map(&(fdf->map), fd))
 		return (0);
+	fdf->map.size = fdf->map.rows * fdf->map.cols;
+	center_map_pivot(&fdf->map);
 	if (!init_projection(fdf))
 		return (0);
 	init_system(fdf);
