@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/04/29 19:29:37 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/04/30 14:05:16 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ MINILIBX =			./mlx/libmlx.a
 SRCS = \
 	main.c\
 	fdf.c\
+	fdf_utils.c\
 	parsing.c\
 	window_utils.c\
 	draw_line.c\

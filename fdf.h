@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 13:41:50 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:04:47 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_map
 {
 	t_point3	**points;
 	t_point2	**proj;
-	t_vector3	limits;
+	t_vector2	limits[2];
 	int			size;
 	int			cols;
 	int			rows;
@@ -63,6 +63,8 @@ typedef struct s_fdf
 }	t_fdf;
 
 int		parse_map(t_map *map, int fd);
+void	center_map_pivot(t_map *map);
+void	set_limits(t_map *map);
 int		init_fdf(t_fdf *fdf, int fd);
 void	free_fdf(t_fdf *fdf);
 int		close_window(t_fdf *fdf);
