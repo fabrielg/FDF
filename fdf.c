@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 19:20:45 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:19:06 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "./mlx/mlx.h"
 #include "./mlx/mlx_int.h"
 #include <math.h>
+#include <stdio.h>
 
 #define WIN_BG_COLOR 0x16151f
 
@@ -36,13 +37,13 @@ static int	init_projection(t_fdf *fdf)
 	int	y;
 	int	x;
 
-	fdf->map.proj = ft_calloc(fdf->map.cols, sizeof(t_point2 *));
+	fdf->map.proj = ft_calloc(fdf->map.rows, sizeof(t_point2 *));
 	if (!fdf->map.proj)
 		return (0);
 	y = -1;
-	while (++y < fdf->map.cols)
+	while (++y < fdf->map.rows)
 	{
-		fdf->map.proj[y] = malloc(fdf->map.rows * sizeof(t_point2));
+		fdf->map.proj[y] = malloc(fdf->map.cols * sizeof(t_point2));
 		if (!fdf->map.proj[y])
 			return (ft_free_map((void **)fdf->map.proj, y), 0);
 		x = -1;
@@ -71,6 +72,7 @@ int	init_fdf(t_fdf *fdf, int fd)
 	fdf->map.scale = 1;
 	fdf->map.offsets.axis[X] = 0;
 	fdf->map.offsets.axis[Y] = 0;
+	fdf->map.z_coeff = 0.1f;
 	init_system(fdf);
 	apply_projection(&fdf->map);
 	set_limits(&fdf->map);
@@ -84,6 +86,6 @@ void	free_fdf(t_fdf *fdf)
 {
 	if (!fdf)
 		return ;
-	ft_free_map((void **)fdf->map.points, fdf->map.cols);
-	ft_free_map((void **)fdf->map.proj, fdf->map.cols);
+	ft_free_map((void **)fdf->map.points, fdf->map.rows);
+	ft_free_map((void **)fdf->map.proj, fdf->map.rows);
 }

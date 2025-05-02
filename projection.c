@@ -6,12 +6,13 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:00:34 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 15:14:16 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:41:22 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "math.h"
+#include <stdio.h>
 
 static t_vector2	projection_iso(t_map *map, t_vector3 v3)
 {
@@ -22,7 +23,7 @@ static t_vector2	projection_iso(t_map *map, t_vector3 v3)
 	v2.axis[X] = (int)((v3.axis[X] - v3.axis[Y]) * cosf(angle)
 			* map->scale + map->offsets.axis[X]);
 	v2.axis[Y] = (int)((v3.axis[X] + v3.axis[Y]) * sinf(angle)
-			* map->scale - v3.axis[Z] * map->scale / WIN_HEIGHT
+			* map->scale - v3.axis[Z] * map->scale * map->z_coeff
 			+ map->offsets.axis[Y]);
 	return (v2);
 }
