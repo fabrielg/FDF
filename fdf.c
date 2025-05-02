@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/02 19:19:06 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:59:33 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,6 @@ int	init_fdf(t_fdf *fdf, int fd)
 	init_system(fdf);
 	apply_projection(&fdf->map);
 	set_limits(&fdf->map);
-	set_scale(&fdf->map);
-	set_offsets(&fdf->map);
-	apply_projection(&fdf->map);
 	return (1);
 }
 

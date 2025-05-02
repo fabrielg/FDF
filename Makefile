@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/04/30 15:11:55 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/05/02 19:45:57 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS = \
 	fdf_utils.c\
 	parsing.c\
 	projection.c\
+	rotation.c\
 	window_utils.c\
 	draw_line.c\
 	draw_map.c\

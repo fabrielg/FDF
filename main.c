@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 19:35:14 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:12:29 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,19 @@
 #include "./mlx/mlx_int.h"
 #include "keycodes.h"
 #include "fdf.h"
+
+int	key_hook(int keycode, t_fdf *fdf)
+{
+	if (keycode == KEY_RIGHT)
+		fdf->map.camera[Y] += 0.1f;
+	else if (keycode == KEY_LEFT)
+		fdf->map.camera[Y] -= 0.1f;
+	else
+		return (0);
+	ft_printf("keycode: %d\n", keycode);
+	draw_map(fdf);
+	return (1);
+}
 
 int	main(int ac, char **av)
 {
@@ -33,9 +46,8 @@ int	main(int ac, char **av)
 		return (0);
 	}
 	draw_map(&fdf);
-	mlx_put_image_to_window(fdf.libx.mlx, fdf.libx.win, fdf.img_datas.img,
-		0, 0);
 	mlx_hook(fdf.libx.win, 17, 0, close_window, &fdf);
+	mlx_hook(fdf.libx.win, 2, 1L << 0, key_hook, (void *)&fdf);
 	mlx_loop(fdf.libx.mlx);
 	close_window(&fdf);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 19:20:31 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:03:01 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	generate_background(t_fdf *fdf);
 void	set_limits(t_map *map);
 void	set_scale(t_map *map);
 void	set_offsets(t_map *map);
+void	apply_rotation(t_map *map);
 int		lerp_rgb(int c1, int c2, float t);
 void	draw_map(t_fdf *fdf);
 
