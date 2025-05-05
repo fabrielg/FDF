@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 20:16:30 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:08:48 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void		rotate_x(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_y(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_z(t_vector3f *in, t_vector3f *out, float angle);
 int			lerp_rgb(int c1, int c2, float t);
+int			key_press(int keycode, t_fdf *fdf);
 void		draw_map(t_fdf *fdf);
 
 #endif
