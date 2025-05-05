@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 22:35:22 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:52:54 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ typedef struct s_img_data
 	int		endian;
 }	t_img_data;
 
-typedef struct s_map
+typedef	struct s_map	t_map;
+struct s_map
 {
 	t_point3	**points;
 	t_point2	**proj;
 	t_vector2	limits[2];
 	t_vector2	offsets;
+	t_vector2	(*proj_function)(t_map *map, t_vector3f v3f);
 	int			size;
 	int			cols;
 	int			rows;
@@ -51,7 +53,7 @@ typedef struct s_map
 	float		z_coeff;
 	int			menu_width;
 	int			bg_color;
-}	t_map;
+};
 
 typedef struct s_libx {
 	void	*mlx;
@@ -72,8 +74,10 @@ void		free_fdf(t_fdf *fdf);
 int			close_window(t_fdf *fdf);
 void		put_pixel(t_img_data *data, int x, int y, int color);
 void		draw_line(t_point2 p0, t_point2 p1, t_img_data *img);
-void		apply_projection(t_map *map);
+void		change_proj_function(t_map *map, char proj);
 t_vector2	projection_iso(t_map *map, t_vector3f v3f);
+t_vector2	projection_ortho(t_map *map, t_vector3f v3f);
+void		apply_projection(t_map *map);
 void		generate_projection(t_map *map, int fit);
 void		generate_background(t_fdf *fdf);
 void		set_limits(t_map *map);
