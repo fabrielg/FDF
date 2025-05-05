@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 21:08:24 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:41:25 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ int	main(int ac, char **av)
 		close_window(&fdf);
 		return (0);
 	}
-	draw_map(&fdf);
+	draw_map(&fdf, 1);
 	mlx_hook(fdf.libx.win, 17, 0, close_window, &fdf);
 	mlx_hook(fdf.libx.win, 2, 1L << 0, key_press, &fdf);
+	mlx_hook(fdf.libx.win, 4, 1L << 2, mouse_action, &fdf);
 	mlx_loop(fdf.libx.mlx);
 	close_window(&fdf);
 	return (0);

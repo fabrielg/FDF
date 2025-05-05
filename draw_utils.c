@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:21:49 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 20:00:27 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:40:43 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,18 @@ void	generate_background(t_fdf *fdf)
 		sizeof(int));
 }
 
-void	generate_projection(t_map *map)
+void	generate_projection(t_map *map, int fit)
 {
 	t_vector3f	in;
 	t_vector3f	out;
 	int			x;
 	int			y;
 
-	set_scale(map);
-	set_offsets(map);
+	if (fit)
+	{
+		set_scale(map);
+		set_offsets(map);
+	}
 	y = -1;
 	while (++y < map->rows)
 	{

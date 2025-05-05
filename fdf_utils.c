@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:04:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/30 19:25:11 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:53:24 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	set_scale(t_map *map)
 		map->scale = scales.axis[X] * 1.0f;
 	else
 		map->scale = scales.axis[Y] * 1.0f;
+	map->scale_min = map->scale * 0.5f;
+	map->scale_max = map->scale * 5.0f;
 }
 
 void	set_offsets(t_map *map)

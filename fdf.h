@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 21:08:48 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:51:17 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_map
 	int			rows;
 	float		camera[3];
 	float		scale;
+	float		scale_min;
+	float		scale_max;
 	float		z_coeff;
 	int			menu_width;
 	int			bg_color;
@@ -72,7 +74,7 @@ void		put_pixel(t_img_data *data, int x, int y, int color);
 void		draw_line(t_point2 p0, t_point2 p1, t_img_data *img);
 void		apply_projection(t_map *map);
 t_vector2	projection_iso(t_map *map, t_vector3f v3f);
-void		generate_projection(t_map *map);
+void		generate_projection(t_map *map, int fit);
 void		generate_background(t_fdf *fdf);
 void		set_limits(t_map *map);
 void		set_scale(t_map *map);
@@ -82,6 +84,7 @@ void		rotate_y(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_z(t_vector3f *in, t_vector3f *out, float angle);
 int			lerp_rgb(int c1, int c2, float t);
 int			key_press(int keycode, t_fdf *fdf);
-void		draw_map(t_fdf *fdf);
+int			mouse_action(int button, int x, int y, void *param);
+void		draw_map(t_fdf *fdf, int fit);
 
 #endif

@@ -6,12 +6,13 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:20:12 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 21:28:50 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:00:31 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "keycodes.h"
+#include <stdio.h>
 
 int	key_press(int k, t_fdf *fdf)
 {
@@ -27,6 +28,23 @@ int	key_press(int k, t_fdf *fdf)
 		fdf->map.z_coeff -= 0.01f;
 	else
 		return (0);
-	draw_map(fdf);
+	draw_map(fdf, 0);
 	return (1);
+}
+
+int	mouse_action(int button, int x, int y, void *param)
+{
+	t_fdf	*fdf;
+
+	fdf = (t_fdf *)param;
+	(void)x;
+	(void)y;
+	if (button == MOUSE_SCROLL_DOWN && fdf->map.scale < fdf->map.scale_max)
+		fdf->map.scale += 0.2f * fdf->map.scale / 2 ;
+	else if (button == MOUSE_SCROLL_UP && fdf->map.scale > 0.5f)
+		fdf->map.scale -= 0.2f * fdf->map.scale / 2 ;
+	else
+		return (0);
+	draw_map(fdf, 0);
+	return (0);
 }
