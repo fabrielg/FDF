@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vectors.h                                          :+:      :+:    :+:   */
+/*   vectors.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 19:37:57 by gfrancoi         ###   ########.fr       */
+/*   Created: 2025/05/05 19:35:27 by gfrancoi          #+#    #+#             */
+/*   Updated: 2025/05/05 19:37:35 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTORS_H
-# define VECTORS_H
+#include "vectors.h"
 
-# define X 0
-# define Y 1
-# define Z 2
-
-typedef struct s_vector3
+t_vector3	vector3f_to_vector3(t_vector3f v3f)
 {
-	int	axis[3];
-}	t_vector3;
+	t_vector3	v3;
 
-typedef struct s_vector2
+	v3.axis[X] = v3f.axis[X];
+	v3.axis[Y] = v3f.axis[Y];
+	v3.axis[Z] = v3f.axis[Z];
+	return (v3);
+}
+
+t_vector3f	vector3_to_vector3f(t_vector3 v3)
 {
-	int	axis[2];
-}	t_vector2;
+	t_vector3f	v3f;
 
-typedef struct s_vector3f
-{
-	float	axis[3];
-}	t_vector3f;
-
-t_vector3	vector3f_to_vector3(t_vector3f v3f);
-t_vector3f	vector3_to_vector3f(t_vector3 v3);
-
-#endif
+	v3f.axis[X] = v3.axis[X];
+	v3f.axis[Y] = v3.axis[Y];
+	v3f.axis[Z] = v3.axis[Z];
+	return (v3f);
+}

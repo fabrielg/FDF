@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:20:02 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/02 20:12:29 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:51:46 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@
 int	key_hook(int keycode, t_fdf *fdf)
 {
 	if (keycode == KEY_RIGHT)
-		fdf->map.camera[Y] += 0.1f;
+		fdf->map.camera[Z] += 0.1f;
 	else if (keycode == KEY_LEFT)
-		fdf->map.camera[Y] -= 0.1f;
+		fdf->map.camera[Z] -= 0.1f;
 	else
 		return (0);
-	ft_printf("keycode: %d\n", keycode);
 	draw_map(fdf);
 	return (1);
 }

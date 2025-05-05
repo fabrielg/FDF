@@ -6,7 +6,7 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/05/02 19:45:57 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/05/05 19:38:12 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS = \
 	draw_line.c\
 	draw_map.c\
 	draw_utils.c\
+	vectors.c\
 	color_utils.c
 
 OBJ_DIR = obj
