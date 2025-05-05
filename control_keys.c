@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:20:12 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 21:12:55 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:13:53 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 int	key_press(int keycode, t_fdf *fdf)
 {
-	if (keycode == KEY_RIGHT)
+	if (keycode == KEY_ESC)
+		close_window(fdf);
+	else if (keycode == KEY_RIGHT)
 		fdf->map.camera[Z] += 0.1f;
 	else if (keycode == KEY_LEFT)
 		fdf->map.camera[Z] -= 0.1f;
