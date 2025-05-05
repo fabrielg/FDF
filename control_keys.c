@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:20:12 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 22:55:32 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:17:06 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	key_press(int k, t_fdf *fdf)
 	else if (k == KEY_W || k == KEY_S)
 		translate_y(&fdf->map, (k == KEY_S) * 5 - 5 * (k == KEY_W));
 	else if (k == KEY_I || k == KEY_O)
-		change_proj_function(&fdf->map, k);
+		return (change_proj_function(fdf, k), 0);
 	else
 		return (0);
 	draw_map(fdf, 0);

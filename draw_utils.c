@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:21:49 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 22:48:41 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:19:48 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	generate_projection(t_map *map, int fit)
 	{
 		set_scale(map);
 		set_offsets(map);
+		map->camera[Y] = 0;
 	}
 	y = -1;
 	while (++y < map->rows)
@@ -41,9 +42,7 @@ void	generate_projection(t_map *map, int fit)
 		{
 			in = vector3_to_vector3f(map->points[y][x].v);
 			out = in;
-			rotate_x(&in, &out, map->camera[X]);
 			rotate_y(&in, &out, map->camera[Y]);
-			rotate_z(&in, &out, map->camera[Z]);
 			map->proj[y][x].v = map->proj_function(map, out);
 		}
 	}

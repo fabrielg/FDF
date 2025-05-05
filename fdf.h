@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 22:52:54 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:25:05 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_img_data
 	int		endian;
 }	t_img_data;
 
-typedef	struct s_map	t_map;
+typedef struct s_map	t_map;
 struct s_map
 {
 	t_point3	**points;
@@ -74,7 +74,7 @@ void		free_fdf(t_fdf *fdf);
 int			close_window(t_fdf *fdf);
 void		put_pixel(t_img_data *data, int x, int y, int color);
 void		draw_line(t_point2 p0, t_point2 p1, t_img_data *img);
-void		change_proj_function(t_map *map, char proj);
+void		change_proj_function(t_fdf *fdf, char proj);
 t_vector2	projection_iso(t_map *map, t_vector3f v3f);
 t_vector2	projection_ortho(t_map *map, t_vector3f v3f);
 void		apply_projection(t_map *map);
