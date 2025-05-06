@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/06 20:13:00 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/06 21:23:23 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ typedef struct s_rgb
 	unsigned char	b;
 }	t_rgb;
 
+typedef struct s_map_color
+{
+	unsigned int	bottom;
+	unsigned int	ground;
+	unsigned int	top;
+}	t_map_color;
+
 typedef struct s_img_data
 {
 	void	*img;
@@ -44,6 +51,7 @@ struct s_map
 	t_vector2	limits[2];
 	t_vector2	offsets;
 	t_proj_func	proj_function;
+	t_map_color	colors;
 	int			size;
 	int			cols;
 	int			rows;
@@ -93,6 +101,8 @@ void		rotate_y(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_z(t_vector3f *in, t_vector3f *out, float angle);
 void		translate_x(t_map *map, int offset);
 void		translate_y(t_map *map, int offset);
+void		next_color(t_map *map, int step);
+void		color_map(t_map *map);
 int			lerp_rgb(int c1, int c2, float t);
 int			key_press(int keycode, t_fdf *fdf);
 int			mouse_action(int button, int x, int y, void *param);

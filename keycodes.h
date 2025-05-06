@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:27:15 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/06 18:08:26 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/06 20:56:35 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define MOUSE_SCROLL_DOWN	4
 # define MOUSE_SCROLL_UP	5
 # define KEY_LEFT			65361
+# define KEY_UP				65362
 # define KEY_RIGHT			65363
+# define KEY_DOWN			65364
 
 #endif

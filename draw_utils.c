@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:21:49 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/06 19:36:39 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/06 20:57:49 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,5 @@ void	generate_projection(t_map *map, int fit)
 			map->proj[y][x].v = map->proj_function(map, out);
 		}
 	}
+	color_map(map);
 }

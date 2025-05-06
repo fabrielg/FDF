@@ -6,12 +6,12 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/05/05 22:35:35 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/05/06 21:19:01 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =				fdf
-CFLAGS =			-Wall -Wextra -Werror
+CFLAGS =			#-Wall -Wextra -Werror
 LIBFT =				./libft/libft.a
 MINILIBX =			./mlx/libmlx.a
 
@@ -20,6 +20,7 @@ SRCS = \
 	fdf.c\
 	fdf_utils.c\
 	parsing.c\
+	color_map.c\
 	projection.c\
 	rotation.c\
 	translate.c\
