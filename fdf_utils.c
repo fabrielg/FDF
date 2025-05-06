@@ -6,11 +6,12 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:04:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 21:53:24 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:51:24 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <math.h>
 
 void	center_map_pivot(t_map *map)
 {
@@ -90,4 +91,33 @@ void	set_offsets(t_map *map)
 	win_center.axis[Y] = WIN_HEIGHT / 2;
 	map->offsets.axis[X] = win_center.axis[X] - proj_center.axis[X];
 	map->offsets.axis[Y] = win_center.axis[Y] - proj_center.axis[Y];
+}
+
+void	set_polar_points(t_map *map)
+{
+	int			x;
+	int			y;
+	float		steps_x;
+	float		steps_y;
+	t_point3	**points;
+
+	steps_x = (M_PI * 2) / (map->limits[1].axis[X] - 1);
+	steps_y = M_PI / (map->limits[1].axis[Y]);
+	map->radius = map->limits[1].axis[X] / (M_PI * 2);
+	points = map->points;
+	y = -1;
+	while (++y < map->rows)
+	{
+		x = -1;
+		while (++x < map->cols)
+		{
+			points[y][x].polar.axis[Y] = -(points[y][x].v.axis[X]) * steps_x;
+			if (points[y][x].v.axis[Y] > 0)
+				points[y][x].polar.axis[X] = (points[y][x].v.axis[Y] + \
+				(map->limits[1].axis[Y] / 2)) * steps_y - 0.5 * steps_y;
+			else
+				points[y][x].polar.axis[X] = (points[y][x].v.axis[Y] + \
+				(map->limits[1].axis[Y] / 2) - 1) * steps_y + 0.5 * steps_y;
+		}
+	}
 }

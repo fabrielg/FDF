@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 23:25:05 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/06 20:13:00 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ typedef struct s_img_data
 }	t_img_data;
 
 typedef struct s_map	t_map;
+typedef t_vector2		(*t_proj_func)(t_map*, t_vector3f);
 struct s_map
 {
 	t_point3	**points;
 	t_point2	**proj;
 	t_vector2	limits[2];
 	t_vector2	offsets;
-	t_vector2	(*proj_function)(t_map *map, t_vector3f v3f);
+	t_proj_func	proj_function;
 	int			size;
 	int			cols;
 	int			rows;
@@ -51,8 +52,10 @@ struct s_map
 	float		scale_min;
 	float		scale_max;
 	float		z_coeff;
+	float		radius;
 	int			menu_width;
 	int			bg_color;
+	int			globe;
 };
 
 typedef struct s_libx {
@@ -83,6 +86,8 @@ void		generate_background(t_fdf *fdf);
 void		set_limits(t_map *map);
 void		set_scale(t_map *map);
 void		set_offsets(t_map *map);
+void		set_polar_points(t_map *map);
+void		spherize(t_map *map, t_vector3f *v3f, t_vector2f polar);
 void		rotate_x(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_y(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_z(t_vector3f *in, t_vector3f *out, float angle);
