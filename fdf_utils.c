@@ -6,13 +6,12 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:04:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/07 11:27:35 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:29:07 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
-#include <stdio.h>
 
 void	center_map_pivot(t_map *map)
 {
