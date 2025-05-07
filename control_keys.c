@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:20:12 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/07 11:57:45 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:14:12 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	key_press(int k, t_fdf *fdf)
 	else if (k == KEY_LEFT)
 		fdf->map.camera[Z] += 0.01f;
 	else if ((k == KEY_SUM || k == KEY_SUM2) && fdf->map.z_coeff < 0.5f)
-		fdf->map.z_coeff += 0.01f;
-	else if ((k == KEY_DIF || k == KEY_DIF2) && fdf->map.z_coeff > 0.01f)
-		fdf->map.z_coeff -= 0.01f;
+		fdf->map.z_coeff += 0.001f;
+	else if ((k == KEY_DIF || k == KEY_DIF2) && fdf->map.z_coeff > 0.001f)
+		fdf->map.z_coeff -= 0.001f;
 	else if (k == KEY_A || k == KEY_D)
 		translate_x(&fdf->map, (k == KEY_D) * 5 - 5 * (k == KEY_A));
 	else if (k == KEY_W || k == KEY_S)
