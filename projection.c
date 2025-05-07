@@ -5,99 +5,85 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/31 20:05:48 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/24 15:23:50 by gfrancoi         ###   ########.fr       */
+/*   Created: 2025/04/30 15:00:34 by gfrancoi          #+#    #+#             */
+/*   Updated: 2025/05/06 19:10:30 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include "keycodes.h"
-#include "./libft/libft.h"
+#include "math.h"
+#include <stdio.h>
 
-void	init_min_max_points(t_fdf *fdf)
+void	change_proj_function(t_fdf *fdf, char proj)
 {
-	t_point2	*p;
-	int			i;
-	int			j;
-
-	fdf->min_points[X] = &fdf->projected_map[0][0];
-	fdf->min_points[Y] = &fdf->projected_map[0][0];
-	fdf->max_points[X] = &fdf->projected_map[0][0];
-	fdf->max_points[Y] = &fdf->projected_map[0][0];
-	i = -1;
-	while (++i < fdf->nb_rows)
+	if (proj == 'i')
 	{
-		j = -1;
-		while (++j < fdf->nb_cols)
-		{
-			p = &fdf->projected_map[i][j];
-			if (fdf->min_points[X]->v.axis[X] > p->v.axis[X])
-				fdf->min_points[X] = p;
-			if (fdf->min_points[Y]->v.axis[Y] > p->v.axis[Y])
-				fdf->min_points[Y] = p;
-			if (fdf->max_points[X]->v.axis[X] < p->v.axis[X])
-				fdf->max_points[X] = p;
-			if (fdf->max_points[Y]->v.axis[Y] < p->v.axis[Y])
-				fdf->max_points[Y] = p;
-		}
+		fdf->map.globe = 0;
+		fdf->map.proj_function = projection_iso;
 	}
-}
-
-int	init_scale_and_offsets(t_fdf *fdf)
-{
-	float	proj_width;
-	float	proj_height;
-	float	scale_x;
-	float	scale_y;
-	float	margin;
-
-	margin = 0.9;
-	proj_width = fdf->max_points[X]->v.axis[X] - fdf->min_points[X]->v.axis[X];
-	proj_height = fdf->max_points[Y]->v.axis[Y] - fdf->min_points[Y]->v.axis[Y];
-	if (proj_width == 0)
-		proj_width = 0.01f;
-	if (proj_height == 0)
-		proj_height = 0.01f;
-	scale_x = (fdf->projection.width * margin) / proj_width;
-	scale_y = (fdf->projection.height * margin) / proj_height;
-	fdf->projection.default_scale = ft_min(scale_x, scale_y);
-	fdf->projection.scale = fdf->projection.default_scale;
-	fdf->projection.offsets[X] = (fdf->projection.width - proj_width
-			* fdf->projection.default_scale)
-		/ 2 - fdf->min_points[X]->v.axis[X] * fdf->projection.default_scale;
-	fdf->projection.offsets[Y] = (fdf->projection.height - proj_height
-			* fdf->projection.default_scale)
-		/ 2 - fdf->min_points[Y]->v.axis[Y] * fdf->projection.default_scale;
-	return (1);
-}
-
-void	draw_map(t_point2 **map, int nb_rows, int nb_cols, t_img_data *img)
-{
-	int	i;
-	int	j;
-
-	if (!map || !(*map))
+	else if (proj == 'o')
+	{
+		fdf->map.globe = 0;
+		fdf->map.proj_function = projection_ortho;
+	}
+	else if (proj == 'g')
+	{
+		fdf->map.globe = !fdf->map.globe;
+		if (fdf->map.globe)
+			fdf->map.proj_function = projection_iso;
+	}
+	else
 		return ;
-	i = 0;
-	while (i < nb_rows)
-	{
-		j = 0;
-		while (j < nb_cols)
-		{
-			if (j + 1 < nb_cols)
-				draw_line(map[i][j], map[i][j + 1], img);
-			if (i + 1 < nb_rows)
-				draw_line(map[i][j], map[i + 1][j], img);
-			j++;
-		}
-		i++;
-	}
+	draw_map(fdf, 1);
 }
 
-void	project(t_fdf *fdf)
+t_vector2	projection_iso(t_map *map, t_vector3f v3f)
 {
-	if (fdf->projection.proj == KEY_I)
-		projection_iso(fdf);
-	else if (fdf->projection.proj == KEY_P)
-		projection_parallel(fdf);
+	t_vector2	v2;
+	float		angle;
+
+	angle = 0.523599;
+	v2.axis[X] = (int)((v3f.axis[X] - v3f.axis[Y]) * cosf(angle)
+			* map->scale + map->offsets.axis[X]);
+	v2.axis[Y] = (int)((v3f.axis[X] + v3f.axis[Y]) * sinf(angle)
+			* map->scale - v3f.axis[Z] * map->scale * map->z_coeff
+			+ map->offsets.axis[Y]);
+	return (v2);
+}
+
+t_vector2	projection_ortho(t_map *map, t_vector3f v3f)
+{
+	t_vector2	v2;
+
+	v2.axis[X] = (int)(v3f.axis[X] * map->scale + map->offsets.axis[X]);
+	v2.axis[Y] = (int)(v3f.axis[Y] * map->scale + map->offsets.axis[Y]);
+	return (v2);
+}
+
+void	spherize(t_map *map, t_vector3f *v3f, t_vector2f polar)
+{
+	float	radius;
+
+	radius = map->radius + (v3f->axis[Z] * map->z_coeff);
+	v3f->axis[X] = radius * cosf(polar.axis[Y]) * sinf(polar.axis[X]);
+	v3f->axis[Y] = radius * sinf(polar.axis[Y]) * sinf(polar.axis[X]);
+	v3f->axis[Z] = radius * cosf(polar.axis[X]);
+}
+
+void	apply_projection(t_map *map)
+{
+	t_vector3f	v3f;
+	int			x;
+	int			y;
+
+	y = -1;
+	while (++y < map->rows)
+	{
+		x = -1;
+		while (++x < map->cols)
+		{
+			v3f = vector3_to_vector3f(map->points[y][x].v);
+			map->proj[y][x].v = map->proj_function(map, v3f);
+		}
+	}
 }

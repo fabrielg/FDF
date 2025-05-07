@@ -6,53 +6,55 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/04/29 14:14:38 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:13:11 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "keycodes.h"
 #include "./libft/libft.h"
+#include "./mlx/mlx.h"
+#include "./mlx/mlx_int.h"
 #include <math.h>
+#include <stdio.h>
 
-static void	init_img(t_img_data *image)
+#define WIN_BG_COLOR 0x16151f
+
+static void	init_system(t_fdf *fdf)
 {
-	image->addr = NULL;
-	image->bg_color = 0;
-	image->bits_per_pixel = 8;
-	image->default_scale = 1;
-	image->scale = image->default_scale;
-	image->endian = 0;
-	image->height = 0;
-	image->width = 0;
-	image->line_length = 0;
-	image->proj = KEY_I;
-	image->offsets[X] = 0;
-	image->offsets[Y] = 0;
-	image->z_divisor = 0.1f;
-	image->img = NULL;
+	fdf->libx.mlx = mlx_init();
+	fdf->libx.win = mlx_new_window(fdf->libx.mlx, WIN_WIDTH, WIN_HEIGHT,
+			"FDF 42 - gfrancoi");
+	fdf->img_datas.img = mlx_new_image(fdf->libx.mlx, WIN_WIDTH, WIN_HEIGHT);
+	fdf->img_datas.addr = mlx_get_data_addr(fdf->img_datas.img,
+			&fdf->img_datas.bits_per_pixel,
+			&fdf->img_datas.line_length,
+			&fdf->img_datas.endian);
 }
 
-static int	init_copy_map(t_fdf *fdf)
+static int	init_projection(t_fdf *fdf)
 {
 	int	y;
-	int	size;
+	int	x;
 
-	size = fdf->nb_cols * sizeof(t_point3);
-	fdf->copy = malloc(size);
-	if (!fdf->copy)
+	fdf->map.proj = ft_calloc(fdf->map.rows, sizeof(t_point2 *));
+	if (!fdf->map.proj)
 		return (0);
-	y = 0;
-	while (y < fdf->nb_rows)
+	y = -1;
+	while (++y < fdf->map.rows)
 	{
-		fdf->copy[y] = malloc(fdf->nb_cols * sizeof(t_point3));
-		if (!fdf->copy[y])
-		{
-			ft_free_map((void **)fdf->copy, y);
+		fdf->map.proj[y] = malloc(fdf->map.cols * sizeof(t_point2));
+		if (!fdf->map.proj[y])
 			return (0);
+		x = -1;
+		while (++x < fdf->map.cols)
+		{
+			fdf->map.proj[y][x].color = fdf->map.points[y][x].color;
+			fdf->map.proj[y][x].default_color
+				= fdf->map.points[y][x].default_color;
+			fdf->map.proj[y][x].v.axis[X] = fdf->map.points[y][x].v.axis[X];
+			fdf->map.proj[y][x].v.axis[Y] = fdf->map.points[y][x].v.axis[Y];
 		}
-		ft_memcpy(fdf->copy[y], fdf->origin_map[y], size);
-		y++;
 	}
 	return (1);
 }
@@ -60,41 +62,22 @@ static int	init_copy_map(t_fdf *fdf)
 int	init_fdf(t_fdf *fdf, int fd)
 {
 	ft_memset(fdf, 0, sizeof(t_fdf));
-	init_img(&fdf->projection);
-	init_img(&fdf->menu);
-	if (!parse(&(fdf->origin_map), fd, &(fdf->nb_rows), &(fdf->nb_cols)))
+	if (!parse_map(&(fdf->map), fd))
 		return (0);
-	if (!init_copy_map(fdf))
+	fdf->map.size = fdf->map.rows * fdf->map.cols;
+	center_map_pivot(&fdf->map);
+	if (!init_projection(fdf))
 		return (0);
-	if (!init_projected_map(&fdf->projected_map, fdf->nb_rows, fdf->nb_cols))
-		return (0);
-	if (!init_window(fdf))
-		return (0);
-	project(fdf);
-	init_min_max_points(fdf);
-	if (!init_scale_and_offsets(fdf))
-		return (0);
-	project(fdf);
-	if (!fdf->projected_map)
-		return (0);
-	return (1);
-}
-
-int	init_projected_map(t_point2 ***pm, int nb_rows, int nb_cols)
-{
-	int	i;
-
-	*pm = ft_calloc(nb_rows + 1, sizeof(t_point2 *));
-	if (!(*pm))
-		return (0);
-	i = 0;
-	while (i < nb_rows)
-	{
-		(*pm)[i] = ft_calloc(nb_cols + 1, sizeof(t_point2));
-		if (!(*pm)[i])
-			return (0);
-		i++;
-	}
+	fdf->map.bg_color = WIN_BG_COLOR;
+	fdf->map.scale = 1;
+	fdf->map.offsets.axis[X] = 0;
+	fdf->map.offsets.axis[Y] = 0;
+	fdf->map.z_coeff = 0.1f;
+	fdf->map.proj_function = projection_iso;
+	init_system(fdf);
+	apply_projection(&fdf->map);
+	set_limits(&fdf->map);
+	set_polar_points(&fdf->map);
 	return (1);
 }
 
@@ -102,7 +85,6 @@ void	free_fdf(t_fdf *fdf)
 {
 	if (!fdf)
 		return ;
-	ft_free_map((void **)fdf->origin_map, fdf->nb_rows);
-	ft_free_map((void **)fdf->copy, fdf->nb_rows);
-	ft_free_map((void **)fdf->projected_map, fdf->nb_rows);
+	ft_free_map((void **)fdf->map.points, fdf->map.rows);
+	ft_free_map((void **)fdf->map.proj, fdf->map.rows);
 }
