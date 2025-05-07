@@ -6,12 +6,13 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:04:08 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/06 17:51:24 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:27:35 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
+#include <stdio.h>
 
 void	center_map_pivot(t_map *map)
 {
@@ -19,8 +20,8 @@ void	center_map_pivot(t_map *map)
 	int			x;
 	int			y;
 
-	pivot.axis[X] = (float)(map->rows / 2);
-	pivot.axis[Y] = (float)((map->size / map->rows) / 2);
+	pivot.axis[X] = (float)(map->cols - 1) / 2.0f;
+	pivot.axis[Y] = (float)(map->rows - 1) / 2.0f;
 	pivot.axis[Z] = 0;
 	y = -1;
 	while (++y < map->rows)
