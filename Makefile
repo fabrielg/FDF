@@ -6,12 +6,12 @@
 #    By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/27 23:38:06 by gfrancoi          #+#    #+#              #
-#    Updated: 2025/05/06 21:19:01 by gfrancoi         ###   ########.fr        #
+#    Updated: 2025/05/07 11:14:05 by gfrancoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =				fdf
-CFLAGS =			#-Wall -Wextra -Werror
+CFLAGS =			-Wall -Wextra -Werror
 LIBFT =				./libft/libft.a
 MINILIBX =			./mlx/libmlx.a
 

@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:13:36 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/06 21:06:06 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:13:11 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	init_projection(t_fdf *fdf)
 	{
 		fdf->map.proj[y] = malloc(fdf->map.cols * sizeof(t_point2));
 		if (!fdf->map.proj[y])
-			return (ft_free_map((void **)fdf->map.proj, y), 0);
+			return (0);
 		x = -1;
 		while (++x < fdf->map.cols)
 		{
