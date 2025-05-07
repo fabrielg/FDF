@@ -47,12 +47,10 @@ static void	color_p(t_point2 *p, int z, t_map_color colors, t_vector2 z_limits)
 		return ;
 	}
 	diff = z_limits.axis[1] - z_limits.axis[0];
-	printf("diff: %d\n", diff);
 	if (diff == 0)
 		grad = 0.5f;
 	else
 		grad = (float)(z - z_limits.axis[0]) / (diff);
-	printf("grad: %f\n", grad);
 	if (grad < 0.5f)
 		p->color = lerp_rgb(colors.bottom, colors.ground, grad * 2.0f);
 	else
@@ -94,7 +92,6 @@ void	color_map(t_map *map)
 
 	z_limits = get_min_max_z(map);
 	y = -1;
-	printf("colors: %p\n", &map->colors);
 	while (++y < map->rows)
 	{
 		x = -1;
