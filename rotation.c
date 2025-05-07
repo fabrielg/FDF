@@ -6,13 +6,12 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:33:37 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/05 19:45:06 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:01:29 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
-#include <stdio.h>
 
 void	rotate_x(t_vector3f *in, t_vector3f *out, float angle)
 {

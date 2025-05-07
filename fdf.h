@@ -6,7 +6,7 @@
 /*   By: gfrancoi <gfrancoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:55:27 by gfrancoi          #+#    #+#             */
-/*   Updated: 2025/05/06 21:23:23 by gfrancoi         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:38:42 by gfrancoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void		spherize(t_map *map, t_vector3f *v3f, t_vector2f polar);
 void		rotate_x(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_y(t_vector3f *in, t_vector3f *out, float angle);
 void		rotate_z(t_vector3f *in, t_vector3f *out, float angle);
+void		rotate_z_polar(t_vector2f *in, t_vector2f *out, float angle);
 void		translate_x(t_map *map, int offset);
 void		translate_y(t_map *map, int offset);
 void		next_color(t_map *map, int step);
